@@ -17,6 +17,21 @@
                             "_classes": []
                         }
                     },
+                    "generate_logged_messages_listing.py": {
+                        "type": "module",
+                        "data": {
+                            "_name": "generate_logged_messages_listing.py",
+                            "_path": "src/commands",
+                            "_module": "commands",
+                            "_functions": [
+                                "generate_logged_messages_listing"
+                            ],
+                            "_classes": [
+                                "FuncVisitor",
+                                "DocumentationGenerator"
+                            ]
+                        }
+                    },
                     "generate_mailmap.py": {
                         "type": "module",
                         "data": {

@@ -2,6 +2,7 @@ import ast
 import re
 import logging
 from pathlib import Path
+import sys
 import pandas as pd
 import astor
 import click
@@ -220,7 +221,13 @@ class DocumentationGenerator:
     default="https://github.com/thoroc/py-documentation-generator",
     show_default=True
 )
-def generate_logged_messages_listing(output_file: str, instance_name: str, source_dir: str, url: str):
+@click.option(
+    "-d",
+    "--debug",
+    is_flag=True,
+    help="Enable debug mode. Prints debug messages to the console.",
+)
+def generate_logged_messages_listing(output_file: str, instance_name: str, source_dir: str, url: str, debug: bool):
     """Write the logged messages to a markdown file.
 
     Args:
@@ -232,6 +239,11 @@ def generate_logged_messages_listing(output_file: str, instance_name: str, sourc
     Returns:
       None
     """
+    if not debug:
+        # default loguru level is DEBUG
+        logger.remove()
+        logger.add(sys.stderr, level="INFO")
+
     generator = DocumentationGenerator(source_dir, url)
 
     output_path = Path(Path.cwd(), "docs", output_file)

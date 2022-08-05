@@ -7,10 +7,11 @@ Index: []
 
 ## commands
 
-| name                              | path         | module   | functions                      | classes   |
-|:----------------------------------|:-------------|:---------|:-------------------------------|:----------|
-| generate_local_modules_listing.py | src/commands | commands | generate_local_modules_listing |           |
-| generate_mailmap.py               | src/commands | commands | generate_mailmap               |           |
+| name                                | path         | module   | functions                        | classes                             |
+|:------------------------------------|:-------------|:---------|:---------------------------------|:------------------------------------|
+| generate_local_modules_listing.py   | src/commands | commands | generate_local_modules_listing   |                                     |
+| generate_logged_messages_listing.py | src/commands | commands | generate_logged_messages_listing | FuncVisitor, DocumentationGenerator |
+| generate_mailmap.py                 | src/commands | commands | generate_mailmap                 |                                     |
 
 
 ## generators

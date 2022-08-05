@@ -1,4 +1,5 @@
 from pathlib import Path
+import sys
 import click
 from loguru import logger
 
@@ -28,7 +29,18 @@ from src.generators.local_module_generator import LocalModuleGenerator
     type=click.Choice(["json", "md"]),
     default="md"
 )
-def generate_local_modules_listing(source_dir: str, output_dir: str, doc_type: str):
+@click.option(
+    "-d",
+    "--debug",
+    is_flag=True,
+    help="Enable debug mode. Prints debug messages to the console.",
+)
+def generate_local_modules_listing(source_dir: str, output_dir: str, doc_type: str, debug: bool):
+    if not debug:
+        # default loguru level is DEBUG
+        logger.remove()
+        logger.add(sys.stderr, level="INFO")
+
     logger.info(f"Generating documentation for {source_dir} (recursive)")
 
     generator = LocalModuleGenerator(source_dir, output_dir, "modules")
