@@ -11,6 +11,7 @@ loguru = "^0.6.0"
 GitPython = "^3.1.27"
 pandas = "^1.4.3"
 tabulate = "^0.8.10"
+astor = "^0.8.1"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^5.0.4"
