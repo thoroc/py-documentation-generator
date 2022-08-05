@@ -201,7 +201,7 @@ class DocumentationGenerator:
     "--instance_name",
     type=str,
     prompt="Please enter the name of the logging instance_name in your code.",
-    default="LOG",
+    default="logger",
     show_default=True,
 )
 @click.option(
@@ -209,7 +209,7 @@ class DocumentationGenerator:
     "--source_dir",
     type=str,
     prompt="Please enter the path to the source code to analyse.",
-    default="app/lambda/src/websales_gateway_crud_api",
+    default="src",
     show_default=True,
 )
 @click.option(
@@ -217,7 +217,7 @@ class DocumentationGenerator:
     "--url",
     type=str,
     prompt="Please enter the url to the hosted repo.",
-    default="https://bitbucket.org/pplcs/onboarding-websales-gateway/src/master/",
+    default="https://github.com/thoroc/py-documentation-generator",
     show_default=True
 )
 def generate_logged_messages_listing(output_file: str, instance_name: str, source_dir: str, url: str):
