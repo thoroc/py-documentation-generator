@@ -1,0 +1,133 @@
+{
+    "src": {
+        "type": "package",
+        "data": {
+            "commands": {
+                "type": "package",
+                "data": {
+                    "generate_local_modules_listing.py": {
+                        "type": "module",
+                        "data": {
+                            "_name": "generate_local_modules_listing.py",
+                            "_path": "src/commands",
+                            "_module": "commands",
+                            "_functions": [
+                                "generate_local_modules_listing"
+                            ],
+                            "_classes": []
+                        }
+                    },
+                    "generate_mailmap.py": {
+                        "type": "module",
+                        "data": {
+                            "_name": "generate_mailmap.py",
+                            "_path": "src/commands",
+                            "_module": "commands",
+                            "_functions": [
+                                "generate_mailmap"
+                            ],
+                            "_classes": []
+                        }
+                    }
+                }
+            },
+            "generators": {
+                "type": "package",
+                "data": {
+                    "documentation_generator.py": {
+                        "type": "module",
+                        "data": {
+                            "_name": "documentation_generator.py",
+                            "_path": "src/generators",
+                            "_module": "generators",
+                            "_functions": [],
+                            "_classes": [
+                                "DocumentationGenerator"
+                            ]
+                        }
+                    },
+                    "local_module_generator.py": {
+                        "type": "module",
+                        "data": {
+                            "_name": "local_module_generator.py",
+                            "_path": "src/generators",
+                            "_module": "generators",
+                            "_functions": [],
+                            "_classes": [
+                                "LocalModuleGenerator"
+                            ]
+                        }
+                    }
+                }
+            },
+            "models": {
+                "type": "package",
+                "data": {
+                    "__init__.py": {
+                        "type": "module",
+                        "data": {
+                            "_name": "__init__.py",
+                            "_path": "src/models",
+                            "_module": "models",
+                            "_functions": [],
+                            "_classes": [
+                                "WrongDataTypeException",
+                                "MissingOutputFilenameException",
+                                "MissingPackageException",
+                                "MissingModuleFilesException"
+                            ]
+                        }
+                    },
+                    "contributor_manager.py": {
+                        "type": "module",
+                        "data": {
+                            "_name": "contributor_manager.py",
+                            "_path": "src/models",
+                            "_module": "models",
+                            "_functions": [],
+                            "_classes": [
+                                "ContributorManager"
+                            ]
+                        }
+                    },
+                    "contributors.py": {
+                        "type": "module",
+                        "data": {
+                            "_name": "contributors.py",
+                            "_path": "src/models",
+                            "_module": "models",
+                            "_functions": [],
+                            "_classes": [
+                                "Contributor"
+                            ]
+                        }
+                    },
+                    "local_modules.py": {
+                        "type": "module",
+                        "data": {
+                            "_name": "local_modules.py",
+                            "_path": "src/models",
+                            "_module": "models",
+                            "_functions": [],
+                            "_classes": [
+                                "LocalModule"
+                            ]
+                        }
+                    },
+                    "module_data_provider.py": {
+                        "type": "module",
+                        "data": {
+                            "_name": "module_data_provider.py",
+                            "_path": "src/models",
+                            "_module": "models",
+                            "_functions": [],
+                            "_classes": [
+                                "ModuleDataProvider"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

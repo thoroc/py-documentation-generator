@@ -2,7 +2,8 @@ from __future__ import annotations
 from pathlib import Path
 from git import Repo
 from loguru import logger
-from .contributors import Contributor
+
+from src.models.contributors import Contributor
 
 
 @logger.catch

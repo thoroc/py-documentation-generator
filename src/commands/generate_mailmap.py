@@ -3,7 +3,8 @@ import sys
 from pathlib import Path
 import click
 from loguru import logger
-from ..models.contributor_manager import ContributorManager
+
+from src.models.contributor_manager import ContributorManager
 
 
 @click.command()
