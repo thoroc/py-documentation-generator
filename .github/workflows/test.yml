@@ -73,5 +73,9 @@ jobs:
       - name: Run tests
         run: |
           source .venv/bin/activate
-          poetry run pytest --exitfirst --verbose --failed-first \
-            py-documentation-generator --cov=. --cov-report html
+          poetry run pytest -s -vvv -x -o log_cli=true \
+            py-documentation-generator --cov=py-documentation-generator \
+            	--cov-append \
+	            --cov-fail-under 80 \
+	            --cov-report term-missing \
+              --cov-report html
