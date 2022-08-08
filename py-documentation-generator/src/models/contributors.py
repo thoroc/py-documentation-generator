@@ -15,15 +15,14 @@ class Contributor:
         self._commits = commits
 
     def add_commit(self, commit: Commit):
-        """Add a commit hash to the list of commits.
+        """Add a commit to the list of commits.
 
         Args:
-            commit (str): The commit hash to add.
+            commit (Commit): The commit to add.
         """
-        hexsha = commit.hexsha
-        if hexsha not in self._commits:
-            self._commits.append(hexsha)
-            logger.debug(f"Added commit {hexsha} to {self}")
+        if commit not in self._commits:
+            self._commits.append(commit)
+            logger.debug(f"Added commit {repr(commit)} to {self}")
 
     def add_commits(self, commits: list):
         """Add a list of commits to the list of commits.
