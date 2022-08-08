@@ -27,7 +27,7 @@ class ContributorManager:
         return self._contributors
 
     def _get_contributor(self, name: str, email: str):
-        """ Get a contributor by name and email """
+        """Get a contributor by name and email"""
         for contributor in self._contributors:
             logger.debug("Checking contributor={}", contributor)
 
@@ -45,8 +45,7 @@ class ContributorManager:
             author_email = commit.author.email
             commit_hash = commit.hexsha
 
-            contributor: Contributor = self._get_contributor(
-                author_name, author_email)
+            contributor: Contributor = self._get_contributor(author_name, author_email)
 
             if author_email not in self._exclude:
                 # check if we have a contributor with the same name and email
@@ -54,19 +53,18 @@ class ContributorManager:
                     logger.debug("Found existing contributor={}", contributor)
                     contributor.add_commit(commit)
                 else:
-                    contributor = Contributor(
-                        author_name, author_email, [commit_hash])
+                    contributor = Contributor(author_name, author_email, [commit_hash])
                     logger.debug("Found new contributor={}", contributor)
                     self._contributors.append(contributor)
 
     @logger.catch
     def _sort_contributors(self):
-        """ Sort contributors by name"""
+        """Sort contributors by name"""
         self._contributors.sort(key=lambda contributor: contributor.name)
 
     @logger.catch
     def write_mailmap(self, sorted_contributors: bool = False):
-        """ Write mailmap file """
+        """Write mailmap file"""
         with self._mail_map_path.open("w") as file_buffer:
             logger.info("Writing mailmap file")
 
@@ -74,6 +72,5 @@ class ContributorManager:
                 self._sort_contributors()
 
             for contributor in self._contributors:
-                logger.debug(
-                    "Writing mailmap entry for contributor={}", contributor)
+                logger.debug("Writing mailmap entry for contributor={}", contributor)
                 file_buffer.write(f"{contributor}\n")

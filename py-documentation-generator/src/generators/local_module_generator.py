@@ -27,15 +27,14 @@ class LocalModuleGenerator(DocumentationGenerator):
 
             for value in list(module.values()):
                 if isinstance(value, list):
-                    values.append(', '.join(value))
+                    values.append(", ".join(value))
                 else:
                     values.append(value)
 
             data.append(values)
 
         dataframe = pd.DataFrame(data, columns=columns)
-        dataframe[columns[0]] = dataframe[columns[0]
-                                          ].str.replace("__", r"\_\_")
+        dataframe[columns[0]] = dataframe[columns[0]].str.replace("__", r"\_\_")
 
         return dataframe.to_markdown(index=False)
 
@@ -72,7 +71,7 @@ class LocalModuleGenerator(DocumentationGenerator):
 
         return content
 
-    @ logger.catch()
+    @logger.catch()
     def _get_data(self):
         cwd = Path(self._source_dir).resolve()
         data = self._data_provider.serialize(cwd)

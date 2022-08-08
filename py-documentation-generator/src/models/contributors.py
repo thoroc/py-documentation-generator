@@ -55,8 +55,7 @@ class Contributor:
         return (self._name, self._email) == (other._name, other._email)
 
     def __repr__(self):
-        return (f"{self.__class__.__name__}"
-                f"(name={self._name}, email={self._email}, commits={self._commits})")
+        return f"{self.__class__.__name__}" f"(name={self._name}, email={self._email}, commits={self._commits})"
 
     def __str__(self):
         return f"{self._name} <{self._email}>"

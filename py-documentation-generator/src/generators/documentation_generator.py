@@ -4,14 +4,10 @@ from pathlib import Path
 from loguru import logger
 
 
-from src.models import (
-    WrongDataTypeException,
-    MissingOutputFilenameException
-)
+from src.models import WrongDataTypeException, MissingOutputFilenameException
 
 
 class DocumentationGenerator(ABC):
-
     def __init__(self, source_dir: str, output_dir: str, output_file_name: str = ""):
         self._source_dir = source_dir
         self._output_dir = output_dir
@@ -21,29 +17,27 @@ class DocumentationGenerator(ABC):
 
     @abstractmethod
     def _get_data(self):
-        """ Generate data """
+        """Generate data"""
         raise NotImplementedError("_generate() must be implemented")
 
     @abstractmethod
     def _get_content(self):
-        """ Transform data """
+        """Transform data"""
         raise NotImplementedError("_transform() must be implemented")
 
     @logger.catch()
     def _get_output_file_path(self, extension: str):
-        """ Get output file path """
+        """Get output file path"""
         return Path(self._output_dir, f"{self._output_file_name}.{extension}")
 
     @logger.catch()
     def to_markdown(self):
-        """ Generate markdown data """
+        """Generate markdown data"""
         if not isinstance(self._data, dict):
-            raise WrongDataTypeException(
-                "Wrong datatype for {}; dict expected".format(type(self._data)))
+            raise WrongDataTypeException("Wrong datatype for {}; dict expected".format(type(self._data)))
 
         if not self._output_file_name:
-            raise MissingOutputFilenameException(
-                "output_file_name must be specified")
+            raise MissingOutputFilenameException("output_file_name must be specified")
 
         output_file = self._get_output_file_path("md")
 
@@ -56,14 +50,12 @@ class DocumentationGenerator(ABC):
 
     @logger.catch()
     def to_json(self):
-        """ Generate json data """
+        """Generate json data"""
         if not isinstance(self._data, dict):
-            raise WrongDataTypeException(
-                "Wrong datatype for {}; dict expected".format(type(self._data)))
+            raise WrongDataTypeException("Wrong datatype for {}; dict expected".format(type(self._data)))
 
         if not self._output_file_name:
-            raise MissingOutputFilenameException(
-                "output_file_name must be specified")
+            raise MissingOutputFilenameException("output_file_name must be specified")
 
         output_file = self._get_output_file_path("json")
 

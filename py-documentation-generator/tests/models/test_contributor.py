@@ -10,16 +10,11 @@ def test_add_new_commit(faker):
     contributor = Contributor(
         name=faker.name(),
         email=faker.free_email_domain(),
-        commits=[
-            commit_1, commit_2, commit_3
-        ]
+        commits=[commit_1, commit_2, commit_3],
     )
 
     # Act
-    new_commit = Commit(
-        repo="",
-        binsha=faker.binary(length=20)
-    )
+    new_commit = Commit(repo="", binsha=faker.binary(length=20))
     contributor.add_commit(new_commit)
 
     # Assert
@@ -34,16 +29,11 @@ def test_add_existing_commit(faker):
     contributor = Contributor(
         name=faker.name(),
         email=faker.free_email_domain(),
-        commits=[
-            commit_1, commit_2, commit_3
-        ]
+        commits=[commit_1, commit_2, commit_3],
     )
 
     # Act
-    existing_commit = Commit(
-        repo="",
-        binsha=commit_3.encode("utf-8")
-    )
+    existing_commit = Commit(repo="", binsha=commit_3.encode("utf-8"))
     contributor.add_commit(existing_commit)
 
     # Assert

@@ -13,7 +13,7 @@ from src.generators.local_module_generator import LocalModuleGenerator
     default=Path("src"),
     prompt="Please enter the path to the source code to analyse.",
     type=click.Path(exists=True),
-    show_default=True
+    show_default=True,
 )
 @click.option(
     "-o",
@@ -21,14 +21,9 @@ from src.generators.local_module_generator import LocalModuleGenerator
     default=Path("docs"),
     prompt="Please enter the path to the documentation.",
     type=click.Path(exists=True),
-    show_default=True
+    show_default=True,
 )
-@click.option(
-    "-t",
-    "--doc-type",
-    type=click.Choice(["json", "md"]),
-    default="md"
-)
+@click.option("-t", "--doc-type", type=click.Choice(["json", "md"]), default="md")
 @click.option(
     "-d",
     "--debug",

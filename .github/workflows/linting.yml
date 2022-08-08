@@ -56,10 +56,16 @@ jobs:
         run: poetry install --no-interaction --no-root
 
       #----------------------------------------------
+      # install your root project, if required
+      #----------------------------------------------
+      - name: Install library
+        run: poetry install --no-interaction
+
+      #----------------------------------------------
       #          install and run linters
       #----------------------------------------------
-      - run: poetry add install black flake8 isort
       - run: |
-          python -m flake8 .
-          python -m black . --check
-          python -m isort .
+          source .venv/bin/activate
+          poetry run black .
+          poetry run flake8 .
+          poetry run isort .
