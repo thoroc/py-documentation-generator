@@ -54,6 +54,6 @@ jobs:
       #----------------------------------------------
       - run: poetry add install black flake8 isort
       - run: |
-          flake8 .
-          black . --check
-          isort .
+          python -m flake8 .
+          python -m black . --check
+          python -m isort .
