@@ -112,6 +112,17 @@ python-versions = ">=3.7"
 toml = ">=0.10.2"
 
 [[package]]
+name = "faker"
+version = "13.15.1"
+description = "Faker is a Python package that generates fake data for you."
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+python-dateutil = ">=2.4"
+
+[[package]]
 name = "flake8"
 version = "5.0.4"
 description = "the modular source code checker: pep8 pyflakes and co"
@@ -714,7 +725,7 @@ dev = ["pytest (>=4.6.2)", "black (>=19.3b0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "091c47965179bb92f360cfa3b007119c1f556c802b207efde7c3e0aee86b74fd"
+content-hash = "be8150c85d9092e7844afc7031c44f08a107ac3c7ef5a78559358be6de3be908"
 
 [metadata.files]
 astor = [
@@ -745,6 +756,7 @@ coverage-threshold = [
     {file = "coverage_threshold-0.4.4-py3-none-any.whl", hash = "sha256:0668e63470ff918fe989af6a4917bfe133e663d25970a306dd0693a3f377f2fb"},
     {file = "coverage_threshold-0.4.4.tar.gz", hash = "sha256:bfd521df1c730e8e34ed66fe95dfa8f079760e763c611cabe84b0779e007898a"},
 ]
+faker = []
 flake8 = []
 flake8-annotations-complexity = []
 flake8-blind-except = []
