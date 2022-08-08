@@ -1,0 +1,17 @@
+[MASTER]
+init-hook='import sys; sys.path.append("./src")'
+
+
+disable=
+    C0114, # missing-module-docstring
+    C0116, # missing-function-docstring
+    R0801, # Similar lines in 2 files
+    R1706, # Consider using ternary
+    W0105, # String statement has no effect
+    W0621, # redefined-outer-name
+    W0613, # Unused argument
+    C0301, # Line too long 
+    C0115, # Missing class docstring
+    R0201, # Method could be a function
+    R0902, # Too many instance attributes
+    W0612, # Unused variable
