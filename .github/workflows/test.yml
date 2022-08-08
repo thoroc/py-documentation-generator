@@ -67,4 +67,4 @@ jobs:
       - name: Run tests
         run: |
           source .venv/bin/activate
-          poetry run pytest py-documentation-generator/tests/ --cov
+          poetry run pytest py-documentation-generator --cov
