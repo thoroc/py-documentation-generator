@@ -14,16 +14,14 @@ class ModuleDataProvider:
     ]
 
     def __get_files(self, node: Path, show_empty: bool = False):
-        """ Get all files in the current directory """
+        """Get all files in the current directory"""
         files = sorted([n for n in node.glob("*.py") if n.is_file()])
 
         if len(files) < 1:
-            raise MissingModuleFilesException(
-                f"No source files found in \"{node}\". Are you sure this is a module?")
+            raise MissingModuleFilesException(f'No source files found in "{node}". Are you sure this is a module?')
 
         if "__init__.py" not in [f.name for f in files]:
-            raise MissingModuleFilesException(
-                f"No __init__.py found in \"{node}\". Are you sure this is a module?")
+            raise MissingModuleFilesException(f'No __init__.py found in "{node}". Are you sure this is a module?')
 
         if show_empty:
             return [n for n in files if n.stat().st_size > 0]
@@ -31,7 +29,7 @@ class ModuleDataProvider:
         return files
 
     def __walk(self, root: Path, show_empty: bool = False):
-        """ Walk through directories
+        """Walk through directories
 
         Args:
             root (Path): Root directory
@@ -51,19 +49,19 @@ class ModuleDataProvider:
                 if "__init__.py" in [n.name for n in leafs]:
                     modules[node.name] = {
                         "type": "package",
-                        "data": self.__walk(node)
+                        "data": self.__walk(node),
                     }
 
             if node.is_file() and node.stat().st_size > 0:
                 modules[node.name] = {
                     "type": "module",
-                    "data": LocalModule.from_path(node)
+                    "data": LocalModule.from_path(node),
                 }
 
         return modules
 
     def serialize(self, root: Path, show_empty: bool = False):
-        """ Serialize package data.
+        """Serialize package data.
 
         Args:
             root (Path): Root directory
@@ -75,6 +73,6 @@ class ModuleDataProvider:
         return {
             root.name: {
                 "type": "package",
-                "data": self.__walk(root, show_empty)
+                "data": self.__walk(root, show_empty),
             }
         }

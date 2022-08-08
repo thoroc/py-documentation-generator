@@ -20,7 +20,11 @@ class FuncVisitor(ast.NodeVisitor):
         visitor.visit(tree)
     """
 
-    def __init__(self, instance_name: str, log_level: str = logging._levelToName[logging.INFO]):
+    def __init__(
+        self,
+        instance_name: str,
+        log_level: str = logging._levelToName[logging.INFO],
+    ):
         self.stats = {}
         self.instance_name = instance_name
         self.log_level = log_level
@@ -35,9 +39,7 @@ class FuncVisitor(ast.NodeVisitor):
             None
         """
         # check for func is an ast.Attribute and value is an ast.Name
-        if isinstance(node.func, ast.Attribute) and isinstance(
-            node.func.value, ast.Name
-        ):
+        if isinstance(node.func, ast.Attribute) and isinstance(node.func.value, ast.Name):
             i_object = node.func.value.id
             i_method = node.func.attr
             i_lineno = node.lineno
@@ -47,22 +49,15 @@ class FuncVisitor(ast.NodeVisitor):
                 no_quotes_message = ""
                 i_args = []
                 # ensuring the method is valid and is the one we want
-                if (
-                    self.log_level in LOG_LEVEL_NANES
-                    and i_method == self.log_level.lower()
-                ):
+                if self.log_level in LOG_LEVEL_NANES and i_method == self.log_level.lower():
                     for arg in node.args:
                         i_args.append(astor.to_source(arg))
                     ast.NodeVisitor.generic_visit(self, node)
                     # clean up i_args
                     joined_message = " ".join(i_args)
-                    no_extra_spaces_message = re.sub(
-                        r"\s+", " ", joined_message.strip("\n\t")
-                    )
-                    no_leading_f_message = re.sub(
-                        r"^f", "", no_extra_spaces_message)
-                    no_quotes_message = re.sub(
-                        r"\"+", "", no_leading_f_message)
+                    no_extra_spaces_message = re.sub(r"\s+", " ", joined_message.strip("\n\t"))
+                    no_leading_f_message = re.sub(r"^f", "", no_extra_spaces_message)
+                    no_quotes_message = re.sub(r"\"+", "", no_leading_f_message)
 
                     self.stats[i_lineno] = no_quotes_message
 
@@ -83,7 +78,10 @@ class DocumentationGenerator:
         self.local_dir = Path(Path.cwd(), source_dir)
 
     def _parse_logs(
-        self, source_code: str, instance_name: str, log_level: str = LOG_LEVEL_NANES[0]
+        self,
+        source_code: str,
+        instance_name: str,
+        log_level: str = LOG_LEVEL_NANES[0],
     ):
         """Parse all logged messages in a source code.
 
@@ -130,8 +128,7 @@ class DocumentationGenerator:
         for file in self.local_dir.rglob("*.py"):
             with open(file, "r") as file_buffer:
                 file_content = file_buffer.read()
-                log_content = self._parse_logs(
-                    file_content, instance_name, log_level)
+                log_content = self._parse_logs(file_content, instance_name, log_level)
                 if log_content:
                     logged_messages[file] = log_content
 
@@ -164,8 +161,7 @@ class DocumentationGenerator:
           str: markdown table content
         """
 
-        logged_messages = self._extract_logged_message(
-            instance_name, log_level)
+        logged_messages = self._extract_logged_message(instance_name, log_level)
         data = []
 
         logger.info("Generating markdown table for {}", instance_name)
@@ -174,14 +170,10 @@ class DocumentationGenerator:
             for file, messages in logged_messages.items():
                 for lineno, message in messages.items():
                     file_path = self._get_relative_path(file)
-                    lineno_link = self._generate_link(
-                        lineno, file_path, file, lineno)
-                    data.append(
-                        [file.name, file_path, lineno_link, f"`{message}`"])
+                    lineno_link = self._generate_link(lineno, file_path, file, lineno)
+                    data.append([file.name, file_path, lineno_link, f"`{message}`"])
 
-            dataframe = pd.DataFrame(
-                data, columns=["file", "path", "lineno", "message"]
-            )  # pylint: disable=C0103
+            dataframe = pd.DataFrame(data, columns=["file", "path", "lineno", "message"])  # pylint: disable=C0103
 
             return dataframe.to_markdown(index=False)
 
@@ -219,7 +211,7 @@ class DocumentationGenerator:
     type=str,
     prompt="Please enter the url to the hosted repo.",
     default="https://github.com/thoroc/py-documentation-generator",
-    show_default=True
+    show_default=True,
 )
 @click.option(
     "-d",
@@ -227,7 +219,13 @@ class DocumentationGenerator:
     is_flag=True,
     help="Enable debug mode. Prints debug messages to the console.",
 )
-def generate_logged_messages_listing(output_file: str, instance_name: str, source_dir: str, url: str, debug: bool):
+def generate_logged_messages_listing(
+    output_file: str,
+    instance_name: str,
+    source_dir: str,
+    url: str,
+    debug: bool,
+):
     """Write the logged messages to a markdown file.
 
     Args:

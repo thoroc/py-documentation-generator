@@ -5,9 +5,16 @@ from pathlib import Path
 
 
 class LocalModule(dict):
-    """ Local module """
+    """Local module"""
 
-    def __init__(self, name: str, path: str, module: str, functions: List[str], classes: List[str]):
+    def __init__(
+        self,
+        name: str,
+        path: str,
+        module: str,
+        functions: List[str],
+        classes: List[str],
+    ):
         self._name = name
         self._path = path
         self._module = module
@@ -17,7 +24,7 @@ class LocalModule(dict):
 
     @classmethod
     def from_path(cls, path: Path):
-        """ Create a LocalModule object from a path.
+        """Create a LocalModule object from a path.
 
         Args:
             path (Path): Path to module
@@ -35,7 +42,7 @@ class LocalModule(dict):
 
     @classmethod
     def from_dict(cls, data_dict: Dict[str, Union[str, List[str]]]):
-        """ Create a LocalModule object from a dict.
+        """Create a LocalModule object from a dict.
 
         Args:
             data_dict (Dict[str, Union[str, List[str]]]): containing name, path, module, functions and classes
@@ -43,14 +50,13 @@ class LocalModule(dict):
         Returns:
             LocalModule: LocalModule object
         """
-        data = {key.replace("_", ""): value for key,
-                value in data_dict.items()}
+        data = {key.replace("_", ""): value for key, value in data_dict.items()}
 
         return cls(**data)
 
     @staticmethod
     def __list_methods(node: Path):
-        """ List all methods.
+        """List all methods.
 
         Args:
             node (Path): Path to module
@@ -66,7 +72,7 @@ class LocalModule(dict):
 
     @staticmethod
     def __list_classes(node: Path):
-        """ List all classes.
+        """List all classes.
 
         Args:
             node (Path): Path to module
