@@ -75,7 +75,7 @@ jobs:
           source .venv/bin/activate
           poetry run pytest -s -vvv -x -o log_cli=true \
             py-documentation-generator --cov=py-documentation-generator \
-            	--cov-append \
-	            --cov-fail-under 80 \
-	            --cov-report term-missing \
+              --cov-append \
+              --cov-fail-under 80 \
+              --cov-report term-missing \
               --cov-report html
