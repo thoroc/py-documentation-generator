@@ -62,9 +62,16 @@ jobs:
         run: poetry install --no-interaction
 
       #----------------------------------------------
+      #        install pytest-annotate-failure
+      #----------------------------------------------
+      - name: Install plugin
+        run: poetry add -D pytest-github-actions-annotate-failures
+
+      #----------------------------------------------
       #              run test suite
       #----------------------------------------------
       - name: Run tests
         run: |
           source .venv/bin/activate
-          poetry run pytest py-documentation-generator --cov
+          poetry run pytest --exitfirst --verbose --failed-first \
+            py-documentation-generator --cov=. --cov-report html
