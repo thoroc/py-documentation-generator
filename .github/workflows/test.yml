@@ -67,4 +67,4 @@ jobs:
       - name: Run tests
         run: |
           source .venv/bin/activate
-          python -m pytest tests/ --cov
+          python -m pytest py-documentation-generator/tests/ --cov

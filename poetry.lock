@@ -236,20 +236,6 @@ python-versions = ">=3.7"
 flake8 = "*"
 
 [[package]]
-name = "flake8-bandit"
-version = "3.0.0"
-description = "Automated security testing with bandit and flake8."
-category = "dev"
-optional = false
-python-versions = ">=3.6"
-
-[package.dependencies]
-bandit = ">=1.7.3"
-flake8 = "*"
-flake8-polyfill = "*"
-pycodestyle = "*"
-
-[[package]]
 name = "flake8-blind-except"
 version = "0.2.1"
 description = "A flake8 extension that checks for blind except: statements"
@@ -1054,7 +1040,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "625b291d9ecb4c10f8ac0aad69a5d6d8dd0eab01ec0f1cb018ad305a6dbf2df2"
+content-hash = "c690a6193a6483437eeae6450457bf86a1ab23ce99e00d443840221b563eec0d"
 
 [metadata.files]
 astor = [
@@ -1100,7 +1086,6 @@ dparse = [
 ]
 flake8 = []
 flake8-annotations-complexity = []
-flake8-bandit = []
 flake8-blind-except = []
 flake8-bugbear = []
 flake8-builtins = [
