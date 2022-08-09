@@ -156,3 +156,26 @@ def test_add_multiple_existing_commits(faker, fake_repo):
     # Assert
     assert existing_commits == contributor.commits
     assert 3 == len(contributor.commits)
+
+
+def test_equivalence(faker, fake_repo):
+    # Arrange
+    name = faker.name()
+    email_address = f"{'.'.join(name.lower().split(' '))}@{faker.free_email_domain()}"
+
+    # Act
+    contributor_a = Contributor(name=name, email=email_address, commits=[
+        Commit(
+            repo=fake_repo,
+            binsha=str.encode(faker.sha1(raw_output=False)[:20])
+        )
+    ])
+    contributor_b = Contributor(name=name, email=email_address, commits=[
+        Commit(
+            repo=fake_repo,
+            binsha=str.encode(faker.sha1(raw_output=False)[:20])
+        )
+    ])
+
+    # Assert
+    assert contributor_a == contributor_b
