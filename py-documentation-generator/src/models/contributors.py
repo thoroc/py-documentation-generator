@@ -1,4 +1,5 @@
 from __future__ import annotations
+from typing import List
 from git import Commit
 from loguru import logger
 
@@ -15,7 +16,7 @@ class Contributor:
         self._commits = commits
 
     def add_commit(self, commit: Commit):
-        """Add a commit to the list of commits.
+        """Add a Commit to the list of existing Commit.
 
         Args:
             commit (Commit): The commit to add.
@@ -24,11 +25,11 @@ class Contributor:
             self._commits.append(commit)
             logger.debug(f"Added commit {repr(commit)} to {self}")
 
-    def add_commits(self, commits: list):
-        """Add a list of commits to the list of commits.
+    def add_commits(self, commits: List[Commit]):
+        """Add a list of Commit to the list of existing Commit.
 
         Args:
-            commits (list): The list of commits to add.
+            commits (list): The list of Commit to add.
         """
         for commit in commits:
             self.add_commit(commit)

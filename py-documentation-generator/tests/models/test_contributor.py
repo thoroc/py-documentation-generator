@@ -80,3 +80,79 @@ def test_add_existing_commit(faker, fake_repo):
     # Assert
     assert existing_commit in contributor.commits
     assert 3 == len(contributor.commits)
+
+
+def test_add_multiple_commits(faker, fake_repo):
+    # Arrange
+    existing_commits = [
+        Commit(
+            repo=fake_repo,
+            binsha=str.encode(faker.sha1(raw_output=False)[:20])
+        ),
+        Commit(
+            repo=fake_repo,
+            binsha=str.encode(faker.sha1(raw_output=False)[:20])
+        ),
+        Commit(
+            repo=fake_repo,
+            binsha=str.encode(faker.sha1(raw_output=False)[:20])
+        )
+    ]
+    name = faker.name()
+    contributor = Contributor(
+        name=name,
+        email=f"{'.'.join(name.lower().split(' '))}@{faker.free_email_domain()}",
+        commits=existing_commits,
+    )
+
+    # Act
+    new_commits = [
+        Commit(
+            repo=fake_repo,
+            binsha=str.encode(faker.sha1(raw_output=False)[:20])
+        ),
+        Commit(
+            repo=fake_repo,
+            binsha=str.encode(faker.sha1(raw_output=False)[:20])
+        ),
+        Commit(
+            repo=fake_repo,
+            binsha=str.encode(faker.sha1(raw_output=False)[:20])
+        ),
+    ]
+    contributor.add_commits(new_commits)
+
+    # Assert
+    assert set(new_commits).issubset(contributor.commits)
+    assert 6 == len(contributor.commits)
+
+
+def test_add_multiple_existing_commits(faker, fake_repo):
+    # Arrange
+    existing_commits = [
+        Commit(
+            repo=fake_repo,
+            binsha=str.encode(faker.sha1(raw_output=False)[:20])
+        ),
+        Commit(
+            repo=fake_repo,
+            binsha=str.encode(faker.sha1(raw_output=False)[:20])
+        ),
+        Commit(
+            repo=fake_repo,
+            binsha=str.encode(faker.sha1(raw_output=False)[:20])
+        )
+    ]
+    name = faker.name()
+    contributor = Contributor(
+        name=name,
+        email=f"{'.'.join(name.lower().split(' '))}@{faker.free_email_domain()}",
+        commits=existing_commits,
+    )
+
+    # Act
+    contributor.add_commits(existing_commits)
+
+    # Assert
+    assert existing_commits == contributor.commits
+    assert 3 == len(contributor.commits)
