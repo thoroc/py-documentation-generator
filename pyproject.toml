@@ -14,7 +14,7 @@ tabulate = "^0.8.10"
 astor = "^0.8.1"
 
 [tool.poetry.dev-dependencies]
-autopep8 = "^1.6.0"
+autopep8 = "^1.7.0"
 coverage = "^6.1.2"
 coverage-threshold = "^0.4.4"
 flake8 = "^5.0.4"
