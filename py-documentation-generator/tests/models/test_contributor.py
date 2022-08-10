@@ -3,16 +3,15 @@ from src.models.contributors import Contributor
 from loguru import logger
 
 
-def test_one_commit(faker, fake_repo):
+def test_one_commit(faker, fake_repo, fake_personalia):
     # Arrange
     commit = Commit(
         repo=fake_repo,
         binsha=str.encode(faker.sha1(raw_output=False)[:20])
     )
-    name = faker.name()
     contributor = Contributor(
-        name=name,
-        email=f"{'.'.join(name.lower().split(' '))}@{faker.free_email_domain()}",
+        name=fake_personalia.name,
+        email=fake_personalia.email,
         commits=[],
     )
 
@@ -23,7 +22,7 @@ def test_one_commit(faker, fake_repo):
     assert commit == contributor.commits[0]
 
 
-def test_add_new_commit(faker, fake_repo):
+def test_add_new_commit(faker, fake_repo, fake_personalia):
     # Arrange
     commit_1 = Commit(
         repo=fake_repo,
@@ -37,10 +36,9 @@ def test_add_new_commit(faker, fake_repo):
         repo=fake_repo,
         binsha=str.encode(faker.sha1(raw_output=False)[:20])
     )
-    name = faker.name()
     contributor = Contributor(
-        name=name,
-        email=f"{'.'.join(name.lower().split(' '))}@{faker.free_email_domain()}",
+        name=fake_personalia.name,
+        email=fake_personalia.email,
         commits=[commit_1, commit_2, commit_3],
     )
 
@@ -55,7 +53,7 @@ def test_add_new_commit(faker, fake_repo):
     assert new_commit in contributor.commits
 
 
-def test_add_existing_commit(faker, fake_repo):
+def test_add_existing_commit(faker, fake_repo, fake_personalia):
     # Arrange
     commit_1 = Commit(
         repo=fake_repo,
@@ -68,8 +66,8 @@ def test_add_existing_commit(faker, fake_repo):
     binhash_3 = str.encode(faker.sha1(raw_output=False)[:20])
     commit_3 = Commit(repo=fake_repo, binsha=binhash_3)
     contributor = Contributor(
-        name=faker.name(),
-        email=faker.free_email_domain(),
+        name=fake_personalia.name,
+        email=fake_personalia.email,
         commits=[commit_1, commit_2, commit_3],
     )
 
@@ -82,7 +80,7 @@ def test_add_existing_commit(faker, fake_repo):
     assert 3 == len(contributor.commits)
 
 
-def test_add_multiple_commits(faker, fake_repo):
+def test_add_multiple_commits(faker, fake_repo, fake_personalia):
     # Arrange
     existing_commits = [
         Commit(
@@ -98,10 +96,9 @@ def test_add_multiple_commits(faker, fake_repo):
             binsha=str.encode(faker.sha1(raw_output=False)[:20])
         )
     ]
-    name = faker.name()
     contributor = Contributor(
-        name=name,
-        email=f"{'.'.join(name.lower().split(' '))}@{faker.free_email_domain()}",
+        name=fake_personalia.name,
+        email=fake_personalia.email,
         commits=existing_commits,
     )
 
@@ -127,7 +124,7 @@ def test_add_multiple_commits(faker, fake_repo):
     assert 6 == len(contributor.commits)
 
 
-def test_add_multiple_existing_commits(faker, fake_repo):
+def test_add_multiple_existing_commits(faker, fake_repo, fake_personalia):
     # Arrange
     existing_commits = [
         Commit(
@@ -143,10 +140,9 @@ def test_add_multiple_existing_commits(faker, fake_repo):
             binsha=str.encode(faker.sha1(raw_output=False)[:20])
         )
     ]
-    name = faker.name()
     contributor = Contributor(
-        name=name,
-        email=f"{'.'.join(name.lower().split(' '))}@{faker.free_email_domain()}",
+        name=fake_personalia.name,
+        email=fake_personalia.email,
         commits=existing_commits,
     )
 
@@ -158,24 +154,30 @@ def test_add_multiple_existing_commits(faker, fake_repo):
     assert 3 == len(contributor.commits)
 
 
-def test_equivalence(faker, fake_repo):
+def test_equivalence(faker, fake_repo, fake_personalia):
     # Arrange
-    name = faker.name()
-    email_address = f"{'.'.join(name.lower().split(' '))}@{faker.free_email_domain()}"
 
     # Act
-    contributor_a = Contributor(name=name, email=email_address, commits=[
-        Commit(
-            repo=fake_repo,
-            binsha=str.encode(faker.sha1(raw_output=False)[:20])
-        )
-    ])
-    contributor_b = Contributor(name=name, email=email_address, commits=[
-        Commit(
-            repo=fake_repo,
-            binsha=str.encode(faker.sha1(raw_output=False)[:20])
-        )
-    ])
+    contributor_a = Contributor(
+        name=fake_personalia.name,
+        email=fake_personalia.email,
+        commits=[
+            Commit(
+                repo=fake_repo,
+                binsha=str.encode(faker.sha1(raw_output=False)[:20])
+            )
+        ]
+    )
+    contributor_b = Contributor(
+        name=fake_personalia.name,
+        email=fake_personalia.email,
+        commits=[
+            Commit(
+                repo=fake_repo,
+                binsha=str.encode(faker.sha1(raw_output=False)[:20])
+            )
+        ]
+    )
 
     # Assert
     assert contributor_a == contributor_b
