@@ -1,9 +1,12 @@
 from __future__ import annotations
 from pathlib import Path
+from typing import List, Union
 from git import Repo
+from git.exc import InvalidGitRepositoryError
 from loguru import logger
 
 from src.models.contributors import Contributor
+from src.models import InvalidGitRepositoryException
 
 
 @logger.catch
@@ -14,11 +17,25 @@ class ContributorManager:
     _contributors: list = []
     _exclude: list = []
 
-    def __init__(self, repo_path: Path, mail_map_file: str, exclude: list):
+    def __init__(self, repo_path: Path, mail_map_file: str = ".mailmap", exclude: Union[List[str], None] = None):
+        """Constructor
+
+        Args:
+            repo_path (Path): path to the repo
+            mail_map_file (str): name for the mailmap file (default: .mailmap)
+            exclude (list): list of email to ignore
+
+        Returns:
+            ContributorManager: manager with list of Contributor
+        """
         self._repo_path = repo_path
-        self._repo = Repo(repo_path)
+        try:
+            self._repo = Repo(repo_path)
+        except InvalidGitRepositoryError as exc_info:
+            raise InvalidGitRepositoryException(
+                "Provided Path is not a valid git repository, not .git subdirectory found.") from exc_info
         self._mail_map_path = Path(mail_map_file)
-        self._exclude = exclude
+        self._exclude = exclude if exclude else []
         self._list_contributors()
 
     @property
@@ -45,7 +62,8 @@ class ContributorManager:
             author_email = commit.author.email
             commit_hash = commit.hexsha
 
-            contributor: Contributor = self._get_contributor(author_name, author_email)
+            contributor: Contributor = self._get_contributor(
+                author_name, author_email)
 
             if author_email not in self._exclude:
                 # check if we have a contributor with the same name and email
@@ -53,7 +71,8 @@ class ContributorManager:
                     logger.debug("Found existing contributor={}", contributor)
                     contributor.add_commit(commit)
                 else:
-                    contributor = Contributor(author_name, author_email, [commit_hash])
+                    contributor = Contributor(
+                        author_name, author_email, [commit_hash])
                     logger.debug("Found new contributor={}", contributor)
                     self._contributors.append(contributor)
 
@@ -72,5 +91,6 @@ class ContributorManager:
                 self._sort_contributors()
 
             for contributor in self._contributors:
-                logger.debug("Writing mailmap entry for contributor={}", contributor)
+                logger.debug(
+                    "Writing mailmap entry for contributor={}", contributor)
                 file_buffer.write(f"{contributor}\n")

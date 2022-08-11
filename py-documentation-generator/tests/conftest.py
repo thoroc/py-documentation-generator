@@ -1,13 +1,8 @@
 from collections import namedtuple
+from git import Repo
 import pytest
-from faker import Faker
 
 Personalia = namedtuple("Personalia", "name email")
-
-
-@pytest.fixture(autouse=True)
-def faker():
-    return Faker()
 
 
 @pytest.fixture(autouse=True)
@@ -28,3 +23,12 @@ def fake_personalia(faker):
         name=faker.name(),
         email=f"{email_local_part}@{faker.free_email_domain()}",
     )
+
+
+@pytest.fixture(autouse=True)
+def fake_local_repo(tmp_path_factory, faker):
+    path = tmp_path_factory.mktemp("data")
+
+    repo = Repo.init(path)
+
+    return repo
