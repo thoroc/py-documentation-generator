@@ -3,15 +3,15 @@ from src.models.contributors import Contributor
 from loguru import logger
 
 
-def test_one_commit(faker, fake_remote_repo, fake_personalia):
+def test_one_commit(faker, fake_remote_repo, fake_author):
     # Arrange
     commit = Commit(
         repo=fake_remote_repo,
         binsha=str.encode(faker.sha1(raw_output=False)[:20])
     )
     contributor = Contributor(
-        name=fake_personalia.name,
-        email=fake_personalia.email,
+        name=fake_author.name,
+        email=fake_author.email,
         commits=[],
     )
 
@@ -22,7 +22,7 @@ def test_one_commit(faker, fake_remote_repo, fake_personalia):
     assert commit == contributor.commits[0]
 
 
-def test_add_new_commit(faker, fake_remote_repo, fake_personalia):
+def test_add_new_commit(faker, fake_remote_repo, fake_author):
     # Arrange
     commit_1 = Commit(
         repo=fake_remote_repo,
@@ -37,8 +37,8 @@ def test_add_new_commit(faker, fake_remote_repo, fake_personalia):
         binsha=str.encode(faker.sha1(raw_output=False)[:20])
     )
     contributor = Contributor(
-        name=fake_personalia.name,
-        email=fake_personalia.email,
+        name=fake_author.name,
+        email=fake_author.email,
         commits=[commit_1, commit_2, commit_3],
     )
 
@@ -53,7 +53,7 @@ def test_add_new_commit(faker, fake_remote_repo, fake_personalia):
     assert new_commit in contributor.commits
 
 
-def test_add_existing_commit(faker, fake_remote_repo, fake_personalia):
+def test_add_existing_commit(faker, fake_remote_repo, fake_author):
     # Arrange
     commit_1 = Commit(
         repo=fake_remote_repo,
@@ -66,8 +66,8 @@ def test_add_existing_commit(faker, fake_remote_repo, fake_personalia):
     binhash_3 = str.encode(faker.sha1(raw_output=False)[:20])
     commit_3 = Commit(repo=fake_remote_repo, binsha=binhash_3)
     contributor = Contributor(
-        name=fake_personalia.name,
-        email=fake_personalia.email,
+        name=fake_author.name,
+        email=fake_author.email,
         commits=[commit_1, commit_2, commit_3],
     )
 
@@ -80,7 +80,7 @@ def test_add_existing_commit(faker, fake_remote_repo, fake_personalia):
     assert 3 == len(contributor.commits)
 
 
-def test_add_multiple_commits(faker, fake_remote_repo, fake_personalia):
+def test_add_multiple_commits(faker, fake_remote_repo, fake_author):
     # Arrange
     existing_commits = [
         Commit(
@@ -97,8 +97,8 @@ def test_add_multiple_commits(faker, fake_remote_repo, fake_personalia):
         )
     ]
     contributor = Contributor(
-        name=fake_personalia.name,
-        email=fake_personalia.email,
+        name=fake_author.name,
+        email=fake_author.email,
         commits=existing_commits,
     )
 
@@ -124,7 +124,7 @@ def test_add_multiple_commits(faker, fake_remote_repo, fake_personalia):
     assert 6 == len(contributor.commits)
 
 
-def test_add_multiple_existing_commits(faker, fake_remote_repo, fake_personalia):
+def test_add_multiple_existing_commits(faker, fake_remote_repo, fake_author):
     # Arrange
     existing_commits = [
         Commit(
@@ -141,8 +141,8 @@ def test_add_multiple_existing_commits(faker, fake_remote_repo, fake_personalia)
         )
     ]
     contributor = Contributor(
-        name=fake_personalia.name,
-        email=fake_personalia.email,
+        name=fake_author.name,
+        email=fake_author.email,
         commits=existing_commits,
     )
 
@@ -154,13 +154,13 @@ def test_add_multiple_existing_commits(faker, fake_remote_repo, fake_personalia)
     assert 3 == len(contributor.commits)
 
 
-def test_equivalence(faker, fake_remote_repo, fake_personalia):
+def test_equivalence(faker, fake_remote_repo, fake_author):
     # Arrange
 
     # Act
     contributor_a = Contributor(
-        name=fake_personalia.name,
-        email=fake_personalia.email,
+        name=fake_author.name,
+        email=fake_author.email,
         commits=[
             Commit(
                 repo=fake_remote_repo,
@@ -169,8 +169,8 @@ def test_equivalence(faker, fake_remote_repo, fake_personalia):
         ]
     )
     contributor_b = Contributor(
-        name=fake_personalia.name,
-        email=fake_personalia.email,
+        name=fake_author.name,
+        email=fake_author.email,
         commits=[
             Commit(
                 repo=fake_remote_repo,

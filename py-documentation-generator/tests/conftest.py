@@ -10,8 +10,8 @@ def fake_remote_repo(faker):
 
 
 @pytest.fixture(autouse=True)
-def fake_personalia(faker):
-    Personalia = namedtuple("Personalia", "name email")
+def fake_author(faker):
+    Author = namedtuple("Author", "name email")
     name = faker.name()
     joining_char = faker.random_element(elements=[".", "-", "_", ""])
     email_local_part = f"{joining_char.join(name.lower().split(' '))}"
@@ -19,7 +19,7 @@ def fake_personalia(faker):
     #     "name": faker.name(),
     #     "email": f"{email_local_part}@{faker.free_email_domain()}",
     # }
-    return Personalia(
+    return Author(
         name=name,
         email=f"{email_local_part}@{faker.free_email_domain()}",
     )
