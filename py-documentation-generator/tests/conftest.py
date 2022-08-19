@@ -6,7 +6,7 @@ Personalia = namedtuple("Personalia", "name email")
 
 
 @pytest.fixture(autouse=True)
-def fake_repo(faker):
+def fake_remote_repo(faker):
     return f"https://{faker.hostname()}/{faker.word()}/{faker.word()}"
 
 

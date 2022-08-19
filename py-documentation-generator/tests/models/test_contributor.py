@@ -3,10 +3,10 @@ from src.models.contributors import Contributor
 from loguru import logger
 
 
-def test_one_commit(faker, fake_repo, fake_personalia):
+def test_one_commit(faker, fake_remote_repo, fake_personalia):
     # Arrange
     commit = Commit(
-        repo=fake_repo,
+        repo=fake_remote_repo,
         binsha=str.encode(faker.sha1(raw_output=False)[:20])
     )
     contributor = Contributor(
@@ -22,18 +22,18 @@ def test_one_commit(faker, fake_repo, fake_personalia):
     assert commit == contributor.commits[0]
 
 
-def test_add_new_commit(faker, fake_repo, fake_personalia):
+def test_add_new_commit(faker, fake_remote_repo, fake_personalia):
     # Arrange
     commit_1 = Commit(
-        repo=fake_repo,
+        repo=fake_remote_repo,
         binsha=str.encode(faker.sha1(raw_output=False)[:20])
     )
     commit_2 = Commit(
-        repo=fake_repo,
+        repo=fake_remote_repo,
         binsha=str.encode(faker.sha1(raw_output=False)[:20])
     )
     commit_3 = Commit(
-        repo=fake_repo,
+        repo=fake_remote_repo,
         binsha=str.encode(faker.sha1(raw_output=False)[:20])
     )
     contributor = Contributor(
@@ -44,7 +44,7 @@ def test_add_new_commit(faker, fake_repo, fake_personalia):
 
     # Act
     new_commit = Commit(
-        repo=fake_repo,
+        repo=fake_remote_repo,
         binsha=str.encode(faker.sha1(raw_output=False)[:20])
     )
     contributor.add_commit(new_commit)
@@ -53,18 +53,18 @@ def test_add_new_commit(faker, fake_repo, fake_personalia):
     assert new_commit in contributor.commits
 
 
-def test_add_existing_commit(faker, fake_repo, fake_personalia):
+def test_add_existing_commit(faker, fake_remote_repo, fake_personalia):
     # Arrange
     commit_1 = Commit(
-        repo=fake_repo,
+        repo=fake_remote_repo,
         binsha=str.encode(faker.sha1(raw_output=False)[:20])
     )
     commit_2 = Commit(
-        repo=fake_repo,
+        repo=fake_remote_repo,
         binsha=str.encode(faker.sha1(raw_output=False)[:20])
     )
     binhash_3 = str.encode(faker.sha1(raw_output=False)[:20])
-    commit_3 = Commit(repo=fake_repo, binsha=binhash_3)
+    commit_3 = Commit(repo=fake_remote_repo, binsha=binhash_3)
     contributor = Contributor(
         name=fake_personalia.name,
         email=fake_personalia.email,
@@ -72,7 +72,7 @@ def test_add_existing_commit(faker, fake_repo, fake_personalia):
     )
 
     # Act
-    existing_commit = Commit(repo=fake_repo, binsha=binhash_3)
+    existing_commit = Commit(repo=fake_remote_repo, binsha=binhash_3)
     contributor.add_commit(existing_commit)
 
     # Assert
@@ -80,19 +80,19 @@ def test_add_existing_commit(faker, fake_repo, fake_personalia):
     assert 3 == len(contributor.commits)
 
 
-def test_add_multiple_commits(faker, fake_repo, fake_personalia):
+def test_add_multiple_commits(faker, fake_remote_repo, fake_personalia):
     # Arrange
     existing_commits = [
         Commit(
-            repo=fake_repo,
+            repo=fake_remote_repo,
             binsha=str.encode(faker.sha1(raw_output=False)[:20])
         ),
         Commit(
-            repo=fake_repo,
+            repo=fake_remote_repo,
             binsha=str.encode(faker.sha1(raw_output=False)[:20])
         ),
         Commit(
-            repo=fake_repo,
+            repo=fake_remote_repo,
             binsha=str.encode(faker.sha1(raw_output=False)[:20])
         )
     ]
@@ -105,15 +105,15 @@ def test_add_multiple_commits(faker, fake_repo, fake_personalia):
     # Act
     new_commits = [
         Commit(
-            repo=fake_repo,
+            repo=fake_remote_repo,
             binsha=str.encode(faker.sha1(raw_output=False)[:20])
         ),
         Commit(
-            repo=fake_repo,
+            repo=fake_remote_repo,
             binsha=str.encode(faker.sha1(raw_output=False)[:20])
         ),
         Commit(
-            repo=fake_repo,
+            repo=fake_remote_repo,
             binsha=str.encode(faker.sha1(raw_output=False)[:20])
         ),
     ]
@@ -124,19 +124,19 @@ def test_add_multiple_commits(faker, fake_repo, fake_personalia):
     assert 6 == len(contributor.commits)
 
 
-def test_add_multiple_existing_commits(faker, fake_repo, fake_personalia):
+def test_add_multiple_existing_commits(faker, fake_remote_repo, fake_personalia):
     # Arrange
     existing_commits = [
         Commit(
-            repo=fake_repo,
+            repo=fake_remote_repo,
             binsha=str.encode(faker.sha1(raw_output=False)[:20])
         ),
         Commit(
-            repo=fake_repo,
+            repo=fake_remote_repo,
             binsha=str.encode(faker.sha1(raw_output=False)[:20])
         ),
         Commit(
-            repo=fake_repo,
+            repo=fake_remote_repo,
             binsha=str.encode(faker.sha1(raw_output=False)[:20])
         )
     ]
@@ -154,7 +154,7 @@ def test_add_multiple_existing_commits(faker, fake_repo, fake_personalia):
     assert 3 == len(contributor.commits)
 
 
-def test_equivalence(faker, fake_repo, fake_personalia):
+def test_equivalence(faker, fake_remote_repo, fake_personalia):
     # Arrange
 
     # Act
@@ -163,7 +163,7 @@ def test_equivalence(faker, fake_repo, fake_personalia):
         email=fake_personalia.email,
         commits=[
             Commit(
-                repo=fake_repo,
+                repo=fake_remote_repo,
                 binsha=str.encode(faker.sha1(raw_output=False)[:20])
             )
         ]
@@ -173,7 +173,7 @@ def test_equivalence(faker, fake_repo, fake_personalia):
         email=fake_personalia.email,
         commits=[
             Commit(
-                repo=fake_repo,
+                repo=fake_remote_repo,
                 binsha=str.encode(faker.sha1(raw_output=False)[:20])
             )
         ]
