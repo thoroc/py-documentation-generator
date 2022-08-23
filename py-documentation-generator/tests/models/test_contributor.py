@@ -1,5 +1,5 @@
 from git import Commit
-from src.models.contributors import Contributor
+from src.models.contributor import Contributor
 from loguru import logger
 
 

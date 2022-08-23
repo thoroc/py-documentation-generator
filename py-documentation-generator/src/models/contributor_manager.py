@@ -5,7 +5,7 @@ from git import Repo
 from git.exc import InvalidGitRepositoryError
 from loguru import logger
 
-from src.models.contributors import Contributor
+from src.models.contributor import Contributor
 from src.models import InvalidGitRepositoryException
 
 
