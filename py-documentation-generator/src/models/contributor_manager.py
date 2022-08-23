@@ -45,19 +45,31 @@ class ContributorManager:
 
     def _get_contributor(self, name: str, email: str):
         """Get a contributor by name and email"""
+        logger.info(
+            "Found {} contributor(s) to the repo {}",
+            len(self._contributors),
+            self._repo.working_tree_dir
+        )
         for contributor in self._contributors:
-            logger.debug("Checking contributor={}", contributor)
+            logger.info("Checking contributor={}", contributor)
 
             if contributor.name == name and contributor.email == email:
-                logger.debug("Match found for contributor={}", contributor)
+                logger.info("Match found for contributor={}", contributor)
                 return contributor
+
+        logger.warning("No contributor found for {} <{}>",
+                       name, email)
 
         return None
 
     @logger.catch
     def _list_contributors(self):
-        logger.info("Generating list of contributors")
-        for commit in self._repo.iter_commits():
+        commits = list(self._repo.iter_commits("HEAD"))
+        logger.info(
+            "Generating list of contributors from {} commit(s).",
+            len(commits)
+        )
+        for commit in commits:
             author_name = commit.author.name
             author_email = commit.author.email
             commit_hash = commit.hexsha
@@ -68,13 +80,15 @@ class ContributorManager:
             if author_email not in self._exclude:
                 # check if we have a contributor with the same name and email
                 if contributor:
-                    logger.debug("Found existing contributor={}", contributor)
+                    logger.info("Found existing contributor={}", contributor)
                     contributor.add_commit(commit)
                 else:
                     contributor = Contributor(
                         author_name, author_email, [commit_hash])
-                    logger.debug("Found new contributor={}", contributor)
+                    logger.info("Found new contributor={}", contributor)
                     self._contributors.append(contributor)
+
+        logger.info("Found {} contributors", len(self._contributors))
 
     @logger.catch
     def _sort_contributors(self):

@@ -23,7 +23,7 @@ class Contributor:
         """
         if commit not in self._commits:
             self._commits.append(commit)
-            logger.debug(f"Added commit {repr(commit)} to {self}")
+            logger.info("Assign commit {} to {}", repr(commit), self)
 
     def add_commits(self, commits: List[Commit]):
         """Add a list of Commit to the list of existing Commit.
@@ -31,6 +31,7 @@ class Contributor:
         Args:
             commits (list): The list of Commit to add.
         """
+        logger.info("Assigning {} commits", len(commits))
         for commit in commits:
             self.add_commit(commit)
 
