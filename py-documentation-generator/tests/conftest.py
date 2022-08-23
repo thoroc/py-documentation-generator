@@ -1,13 +1,13 @@
 from collections import namedtuple
 from pathlib import Path
-from git import Repo
+from git import Repo, Commit
 import pytest
 from loguru import logger
 from src.models.contributor import Contributor
 
 
 @pytest.fixture(autouse=True)
-def remove_url(faker):
+def remote_url(faker):
     faker.random.seed()
     return f"https://{faker.hostname()}/{faker.word()}/{faker.word()}"
 
@@ -29,11 +29,12 @@ def email(faker, name: str):
 @pytest.fixture(autouse=True)
 def contributor_factory():
     class Factory:
-        def create(self, name, email):
+        def create(self, name, email, commits=None):
+            commits = [] if not commits else commits
             contributor = Contributor(
                 name=name,
                 email=email,
-                commits=[]
+                commits=commits
             )
             return contributor
 
@@ -43,6 +44,26 @@ def contributor_factory():
 @pytest.fixture(autouse=True)
 def contributor(contributor_factory, name: str, email: str):
     return contributor_factory().create(name, email)
+
+
+@pytest.fixture(autouse=True)
+def commit_factory():
+    class Factory:
+        def create(self, faker, repo, binsha=None):
+            binsha = str.encode(
+                faker.sha1(raw_output=False)[:20]
+            ) if not binsha else binsha
+            return Commit(
+                repo=repo,
+                binsha=binsha
+            )
+
+    return Factory
+
+
+@pytest.fixture(autouse=True)
+def commit(commit_factory, faker, remote_url):
+    return commit_factory().create(faker, remote_url)
 
 
 @pytest.fixture(autouse=True, scope="function")

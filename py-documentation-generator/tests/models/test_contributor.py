@@ -2,12 +2,8 @@ from git import Commit
 from src.models.contributor import Contributor
 
 
-def test_one_commit(faker, remove_url, contributor: Contributor):
+def test_one_commit(contributor: Contributor, commit: Commit):
     # Arrange
-    commit = Commit(
-        repo=remove_url,
-        binsha=str.encode(faker.sha1(raw_output=False)[:20])
-    )
 
     # Act
     contributor.add_commit(commit)
@@ -16,51 +12,31 @@ def test_one_commit(faker, remove_url, contributor: Contributor):
     assert commit == contributor.commits[0]
 
 
-def test_add_new_commit(faker, remove_url, contributor: Contributor):
+def test_add_new_commit(faker, remote_url, contributor: Contributor, commit_factory):
     # Arrange
-    existing_commits = [
-        Commit(
-            repo=remove_url,
-            binsha=str.encode(faker.sha1(raw_output=False)[:20])
-        ),
-        Commit(
-            repo=remove_url,
-            binsha=str.encode(faker.sha1(raw_output=False)[:20])
-        ),
-        Commit(
-            repo=remove_url,
-            binsha=str.encode(faker.sha1(raw_output=False)[:20])
-        )
-    ]
+    existing_commits = []
+    for _ in range(0, 3):
+        existing_commits.append(commit_factory().create(faker, remote_url))
     contributor._commits = existing_commits
 
     # Act
-    new_commit = Commit(
-        repo=remove_url,
-        binsha=str.encode(faker.sha1(raw_output=False)[:20])
-    )
+    new_commit = commit_factory().create(faker, remote_url)
     contributor.add_commit(new_commit)
 
     # Assert
     assert new_commit in contributor.commits
 
 
-def test_add_existing_commit(faker, remove_url, contributor: Contributor):
+def test_add_existing_commit(faker, remote_url, contributor: Contributor, commit_factory):
     # Arrange
-    commit_1 = Commit(
-        repo=remove_url,
-        binsha=str.encode(faker.sha1(raw_output=False)[:20])
-    )
-    commit_2 = Commit(
-        repo=remove_url,
-        binsha=str.encode(faker.sha1(raw_output=False)[:20])
-    )
+    commit_1 = commit_factory().create(faker, remote_url)
+    commit_2 = commit_factory().create(faker, remote_url)
     binhash_3 = str.encode(faker.sha1(raw_output=False)[:20])
-    commit_3 = Commit(repo=remove_url, binsha=binhash_3)
+    commit_3 = commit_factory().create(faker, remote_url, binsha=binhash_3)
     contributor._commits = [commit_1, commit_2, commit_3]
 
     # Act
-    existing_commit = Commit(repo=remove_url, binsha=binhash_3)
+    existing_commit = commit_factory().create(faker, remote_url, binsha=binhash_3)
     contributor.add_commit(existing_commit)
 
     # Assert
@@ -68,39 +44,17 @@ def test_add_existing_commit(faker, remove_url, contributor: Contributor):
     assert 3 == len(contributor.commits)
 
 
-def test_add_multiple_commits(faker, remove_url, contributor: Contributor):
+def test_add_multiple_commits(faker, remote_url, contributor: Contributor, commit_factory):
     # Arrange
-    existing_commits = [
-        Commit(
-            repo=remove_url,
-            binsha=str.encode(faker.sha1(raw_output=False)[:20])
-        ),
-        Commit(
-            repo=remove_url,
-            binsha=str.encode(faker.sha1(raw_output=False)[:20])
-        ),
-        Commit(
-            repo=remove_url,
-            binsha=str.encode(faker.sha1(raw_output=False)[:20])
-        )
-    ]
+    existing_commits = []
+    for _ in range(0, 3):
+        existing_commits.append(commit_factory().create(faker, remote_url))
     contributor._commits = existing_commits
 
     # Act
-    new_commits = [
-        Commit(
-            repo=remove_url,
-            binsha=str.encode(faker.sha1(raw_output=False)[:20])
-        ),
-        Commit(
-            repo=remove_url,
-            binsha=str.encode(faker.sha1(raw_output=False)[:20])
-        ),
-        Commit(
-            repo=remove_url,
-            binsha=str.encode(faker.sha1(raw_output=False)[:20])
-        ),
-    ]
+    new_commits = []
+    for _ in range(0, 3):
+        new_commits.append(commit_factory().create(faker, remote_url))
     contributor.add_commits(new_commits)
 
     # Assert
@@ -108,22 +62,11 @@ def test_add_multiple_commits(faker, remove_url, contributor: Contributor):
     assert 6 == len(contributor.commits)
 
 
-def test_add_multiple_existing_commits(faker, remove_url, contributor: Contributor):
+def test_add_multiple_existing_commits(faker, remote_url, contributor: Contributor, commit_factory):
     # Arrange
-    existing_commits = [
-        Commit(
-            repo=remove_url,
-            binsha=str.encode(faker.sha1(raw_output=False)[:20])
-        ),
-        Commit(
-            repo=remove_url,
-            binsha=str.encode(faker.sha1(raw_output=False)[:20])
-        ),
-        Commit(
-            repo=remove_url,
-            binsha=str.encode(faker.sha1(raw_output=False)[:20])
-        )
-    ]
+    existing_commits = []
+    for _ in range(0, 3):
+        existing_commits.append(commit_factory().create(faker, remote_url))
     contributor._commits = existing_commits
 
     # Act
@@ -134,29 +77,19 @@ def test_add_multiple_existing_commits(faker, remove_url, contributor: Contribut
     assert 3 == len(contributor.commits)
 
 
-def test_equivalence(faker, remove_url, contributor: Contributor):
+def test_equivalence(faker, remote_url, name, email, contributor_factory, commit_factory):
     # Arrange
 
     # Act
-    sut_a = Contributor(
-        name=contributor.name,
-        email=contributor.email,
-        commits=[
-            Commit(
-                repo=remove_url,
-                binsha=str.encode(faker.sha1(raw_output=False)[:20])
-            )
-        ]
+    sut_a = contributor_factory().create(
+        name=name,
+        email=email,
+        commits=[commit_factory().create(faker, remote_url)]
     )
-    sut_b = Contributor(
-        name=contributor.name,
-        email=contributor.email,
-        commits=[
-            Commit(
-                repo=remove_url,
-                binsha=str.encode(faker.sha1(raw_output=False)[:20])
-            )
-        ]
+    sut_b = contributor_factory().create(
+        name=name,
+        email=email,
+        commits=[commit_factory().create(faker, remote_url)]
     )
 
     # Assert
