@@ -33,7 +33,8 @@ class ContributorManager:
             self._repo = Repo(repo_path)
         except InvalidGitRepositoryError as exc_info:
             raise InvalidGitRepositoryException(
-                "Provided Path is not a valid git repository, not .git subdirectory found.") from exc_info
+                "Provided Path is not a valid git repository, not .git subdirectory found."
+            ) from exc_info
         self._mail_map_path = Path(mail_map_file)
         self._exclude = exclude if exclude else []
         self._list_contributors()
@@ -44,7 +45,15 @@ class ContributorManager:
         return self._contributors
 
     def _get_contributor(self, name: str, email: str):
-        """Get a contributor by name and email"""
+        """Get a contributor by name and email.
+
+        Args:
+            name (str): the contributor's name
+            email (str): the contributor's email
+
+        Returns:
+            Contributor|None: the contributor found
+        """
         logger.info(
             "Found {} contributor(s) to the repo {}",
             len(self._contributors),
@@ -57,8 +66,10 @@ class ContributorManager:
                 logger.info("Match found for contributor={}", contributor)
                 return contributor
 
-        logger.warning("No contributor found for {} <{}>",
-                       name, email)
+        logger.warning(
+            "No contributor found for {} <{}>",
+            name, email
+        )
 
         return None
 
