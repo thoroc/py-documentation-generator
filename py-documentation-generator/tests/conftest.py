@@ -8,16 +8,19 @@ from src.models.contributor import Contributor
 
 @pytest.fixture(autouse=True)
 def remove_url(faker):
+    faker.random.seed()
     return f"https://{faker.hostname()}/{faker.word()}/{faker.word()}"
 
 
 @pytest.fixture(autouse=True)
 def name(faker):
+    faker.random.seed()
     return faker.name()
 
 
 @pytest.fixture(autouse=True)
 def email(faker, name):
+    faker.random.seed()
     joining_char = faker.random_element(elements=[".", "-", "_", ""])
     email_local_part = f"{joining_char.join(name.lower().split(' '))}"
     return f"{email_local_part}@{faker.free_email_domain()}"
@@ -32,8 +35,9 @@ def contributor(name, email):
     )
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture(autouse=True, scope="function")
 def local_repo(tmp_path_factory, faker):
+    faker.random.seed()
     tmp_dir = tmp_path_factory.mktemp("data")
 
     repo = Repo.init(tmp_dir, initial_branch=f"{faker.word()}")
