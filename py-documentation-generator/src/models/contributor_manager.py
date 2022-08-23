@@ -88,7 +88,6 @@ class ContributorManager:
         for commit in commits:
             author_name = commit.author.name
             author_email = commit.author.email
-            commit_hash = commit.hexsha
 
             contributor: Contributor = self._get_contributor(
                 author_name, author_email)
@@ -100,7 +99,7 @@ class ContributorManager:
                     contributor.add_commit(commit)
                 else:
                     contributor = Contributor(
-                        author_name, author_email, [commit_hash])
+                        author_name, author_email, [commit])
                     logger.info("Found new contributor={}", contributor)
                     self._contributors.append(contributor)
 
@@ -122,5 +121,7 @@ class ContributorManager:
 
             for contributor in self._contributors:
                 logger.debug(
-                    "Writing mailmap entry for contributor={}", contributor)
+                    "Writing mailmap entry for contributor={}",
+                    contributor
+                )
                 file_buffer.write(f"{contributor}\n")
