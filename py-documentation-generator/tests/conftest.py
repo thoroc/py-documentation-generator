@@ -3,9 +3,7 @@ from pathlib import Path
 from git import Repo
 import pytest
 from loguru import logger
-
-
-Author = namedtuple("Author", "name email committer")
+from src.models.contributor import Contributor
 
 
 @pytest.fixture(autouse=True)
@@ -26,11 +24,11 @@ def email(faker, name):
 
 
 @pytest.fixture(autouse=True)
-def author(name, email):
-    return Author(
+def contributor(name, email):
+    return Contributor(
         name=name,
         email=email,
-        committer=f"{name} <{email}>"
+        commits=[]
     )
 
 

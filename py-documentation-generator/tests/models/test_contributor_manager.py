@@ -2,17 +2,17 @@ from pathlib import Path
 import pytest
 from loguru import logger
 from git import Repo
+from src.models.contributor import Contributor
 from src.models.contributor_manager import ContributorManager
-from tests.conftest import Author
 
 
-def test__get_contrinutor_found(faker, author: Author, local_repo: Repo):
+def test__get_contrinutor_found(faker, contributor: Contributor, local_repo: Repo):
     # Arrange
     file_to_commit = Path(local_repo.working_tree_dir) / "test.txt"
     file_to_commit.write_text(faker.sentence(nb_words=10))
     local_repo.git.add(str(file_to_commit))
     local_repo.git.commit(
-        "-m", "test commit", author=author.committer
+        "-m", "test commit", author=str(contributor)
     )
 
     manager = ContributorManager(
@@ -20,17 +20,17 @@ def test__get_contrinutor_found(faker, author: Author, local_repo: Repo):
     )
 
     # Act
-    contributor = manager._get_contributor(
-        name=author.name,
-        email=author.email
+    sut: Contributor = manager._get_contributor(
+        name=contributor.name,
+        email=contributor.email
     )
 
     # Assert
-    assert contributor.name == author.name
-    assert contributor.email == author.email
+    assert sut.name == contributor.name
+    assert sut.email == contributor.email
 
 
-def test__get_contributor_not_found(author: Author, local_repo: Repo):
+def test__get_contributor_not_found(contributor: Contributor, local_repo: Repo):
     # Arrange
     manager = ContributorManager(
         repo_path=local_repo.working_tree_dir
@@ -50,9 +50,9 @@ def test__get_contributor_not_found(author: Author, local_repo: Repo):
         logger.debug("Commit: {} by Author: {}", commit, commit.author)
 
     # Act
-    contributor = manager._get_contributor(
-        name=author.name,
-        email=author.email
+    sut: Contributor = manager._get_contributor(
+        name=contributor.name,
+        email=contributor.email
     )
 
     # Assert
