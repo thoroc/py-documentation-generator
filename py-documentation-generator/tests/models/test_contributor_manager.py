@@ -15,6 +15,9 @@ def test__get_contrinutor_found(faker, contributor: Contributor, local_repo: Rep
         "-m", "test commit", author=str(contributor)
     )
 
+    for item in Path(local_repo.working_tree_dir).iterdir():
+        logger.warning(item)
+
     manager = ContributorManager(
         repo_path=local_repo.working_tree_dir
     )
@@ -36,7 +39,7 @@ def test__get_contributor_not_found(contributor: Contributor, local_repo: Repo):
         repo_path=local_repo.working_tree_dir
     )
 
-    pytest.set_trace()
+    # pytest.set_trace()
 
     logger.debug("local_repo: {}", local_repo.working_tree_dir)
 
@@ -56,4 +59,4 @@ def test__get_contributor_not_found(contributor: Contributor, local_repo: Repo):
     )
 
     # Assert
-    assert contributor is None
+    assert sut is None

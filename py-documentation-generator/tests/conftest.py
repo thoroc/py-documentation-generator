@@ -52,3 +52,5 @@ def local_repo(tmp_path_factory, faker):
     logger.debug("Initialised Repo on: {}", tmp_dir)
 
     yield repo
+
+    repo.git.rm(tmp_dir, r=True)
