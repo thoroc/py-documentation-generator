@@ -14,7 +14,7 @@ class ContributorManager:
     _repo_path: Path
     _repo: Repo
     _mail_map_path: Path
-    _contributors: list = []
+    _contributors: List[Contributor] = []
     _exclude: list = []
 
     def __init__(self, repo_path: Path, mail_map_file: str = ".mailmap", exclude: Union[List[str], None] = None):
