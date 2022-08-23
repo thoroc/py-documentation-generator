@@ -9,7 +9,7 @@ Author = namedtuple("Author", "name email committer")
 
 
 @pytest.fixture(autouse=True)
-def fake_remote_repo(faker):
+def remove_url(faker):
     return f"https://{faker.hostname()}/{faker.word()}/{faker.word()}"
 
 
