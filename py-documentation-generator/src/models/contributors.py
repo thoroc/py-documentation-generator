@@ -8,9 +8,9 @@ from loguru import logger
 class Contributor:
     _name: str
     _email: str
-    _commits: list
+    _commits: List[Commit]
 
-    def __init__(self, name: str, email: str, commits: list):
+    def __init__(self, name: str, email: str, commits: List[Commit]):
         self._name = name
         self._email = email
         self._commits = commits
@@ -36,17 +36,17 @@ class Contributor:
             self.add_commit(commit)
 
     @property
-    def name(self):
+    def name(self) -> str:
         """The name of the contributor."""
         return self._name
 
     @property
-    def email(self):
+    def email(self) -> str:
         """The email of the contributor."""
         return self._email
 
     @property
-    def commits(self):
+    def commits(self) -> List[Commit]:
         """The list of commits."""
         return self._commits
 
