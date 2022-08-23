@@ -1,6 +1,8 @@
 from collections import namedtuple
+from pathlib import Path
 from git import Repo
 import pytest
+from loguru import logger
 
 
 Author = namedtuple("Author", "name email committer")
@@ -34,8 +36,17 @@ def author(name, email):
 
 @pytest.fixture(autouse=True)
 def fake_local_repo(tmp_path_factory, faker):
-    path = tmp_path_factory.mktemp("data")
+    tmp_dir = tmp_path_factory.mktemp("data")
 
-    repo = Repo.init(path)
+    repo = Repo.init(tmp_dir, initial_branch=f"{faker.word()}")
 
-    return repo
+    file = Path(tmp_dir) / "README.md"
+    file.write_text("# README")
+
+    repo.git.add(file)
+    repo.git.commit("-m", "initial commit",
+                    author=f"test-bot <test-bot@{faker.free_email_domain()}>")
+
+    logger.debug("Initialised Repo on: {}", tmp_dir)
+
+    yield repo
