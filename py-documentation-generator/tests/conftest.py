@@ -3,6 +3,8 @@ from git import Repo
 import pytest
 
 
+Author = namedtuple("Author", "name email committer")
+
 
 @pytest.fixture(autouse=True)
 def fake_remote_repo(faker):
@@ -10,18 +12,23 @@ def fake_remote_repo(faker):
 
 
 @pytest.fixture(autouse=True)
-def fake_author(faker):
-    Author = namedtuple("Author", "name email")
-    name = faker.name()
+def name(faker):
+    return faker.name()
+
+
+@pytest.fixture(autouse=True)
+def email(faker, name):
     joining_char = faker.random_element(elements=[".", "-", "_", ""])
     email_local_part = f"{joining_char.join(name.lower().split(' '))}"
-    # return {
-    #     "name": faker.name(),
-    #     "email": f"{email_local_part}@{faker.free_email_domain()}",
-    # }
+    return f"{email_local_part}@{faker.free_email_domain()}"
+
+
+@pytest.fixture(autouse=True)
+def author(name, email):
     return Author(
         name=name,
-        email=f"{email_local_part}@{faker.free_email_domain()}",
+        email=email,
+        committer=f"{name} <{email}>"
     )
 
 
