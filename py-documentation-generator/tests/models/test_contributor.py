@@ -16,11 +16,12 @@ def test_add_new_commit(faker, remote_url, contributor: Contributor, commit_fact
     # Arrange
     existing_commits = []
     for _ in range(0, 3):
-        existing_commits.append(commit_factory().create(faker, remote_url))
+        existing_commits.append(
+            commit_factory.create(faker=faker, repo=remote_url))
     contributor._commits = existing_commits
 
     # Act
-    new_commit = commit_factory().create(faker, remote_url)
+    new_commit = commit_factory.create(faker=faker, repo=remote_url)
     contributor.add_commit(new_commit)
 
     # Assert
@@ -29,14 +30,17 @@ def test_add_new_commit(faker, remote_url, contributor: Contributor, commit_fact
 
 def test_add_existing_commit(faker, remote_url, contributor: Contributor, commit_factory):
     # Arrange
-    commit_1 = commit_factory().create(faker, remote_url)
-    commit_2 = commit_factory().create(faker, remote_url)
+    commit_1 = commit_factory.create(faker=faker, repo=remote_url)
+    commit_2 = commit_factory.create(faker=faker, repo=remote_url)
     binhash_3 = str.encode(faker.sha1(raw_output=False)[:20])
-    commit_3 = commit_factory().create(faker, remote_url, binsha=binhash_3)
+    commit_3 = commit_factory.create(
+        faker=faker, repo=remote_url, binsha=binhash_3
+    )
     contributor._commits = [commit_1, commit_2, commit_3]
 
     # Act
-    existing_commit = commit_factory().create(faker, remote_url, binsha=binhash_3)
+    existing_commit = commit_factory.create(
+        faker, remote_url, binsha=binhash_3)
     contributor.add_commit(existing_commit)
 
     # Assert
@@ -48,13 +52,15 @@ def test_add_multiple_commits(faker, remote_url, contributor: Contributor, commi
     # Arrange
     existing_commits = []
     for _ in range(0, 3):
-        existing_commits.append(commit_factory().create(faker, remote_url))
+        existing_commits.append(
+            commit_factory.create(faker=faker, repo=remote_url)
+        )
     contributor._commits = existing_commits
 
     # Act
     new_commits = []
     for _ in range(0, 3):
-        new_commits.append(commit_factory().create(faker, remote_url))
+        new_commits.append(commit_factory.create(faker=faker, repo=remote_url))
     contributor.add_commits(new_commits)
 
     # Assert
@@ -66,7 +72,8 @@ def test_add_multiple_existing_commits(faker, remote_url, contributor: Contribut
     # Arrange
     existing_commits = []
     for _ in range(0, 3):
-        existing_commits.append(commit_factory().create(faker, remote_url))
+        existing_commits.append(
+            commit_factory.create(faker=faker, repo=remote_url))
     contributor._commits = existing_commits
 
     # Act
@@ -81,15 +88,15 @@ def test_equivalence(faker, remote_url, name, email, contributor_factory, commit
     # Arrange
 
     # Act
-    sut_a = contributor_factory().create(
+    sut_a = contributor_factory.create(
         name=name,
         email=email,
-        commits=[commit_factory().create(faker, remote_url)]
+        commits=[commit_factory.create(faker=faker, repo=remote_url)]
     )
-    sut_b = contributor_factory().create(
+    sut_b = contributor_factory.create(
         name=name,
         email=email,
-        commits=[commit_factory().create(faker, remote_url)]
+        commits=[commit_factory.create(faker=faker, repo=remote_url)]
     )
 
     # Assert

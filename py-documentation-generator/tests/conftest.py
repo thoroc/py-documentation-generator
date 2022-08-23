@@ -1,4 +1,3 @@
-from collections import namedtuple
 from pathlib import Path
 from git import Repo, Commit
 import pytest
@@ -28,8 +27,9 @@ def email(faker, name: str):
 
 @pytest.fixture(autouse=True)
 def contributor_factory():
-    class Factory:
-        def create(self, name, email, commits=None):
+    class ContributorFactory:
+        @staticmethod
+        def create(name, email, commits=None):
             commits = [] if not commits else commits
             contributor = Contributor(
                 name=name,
@@ -38,18 +38,19 @@ def contributor_factory():
             )
             return contributor
 
-    return Factory
+    return ContributorFactory
 
 
 @pytest.fixture(autouse=True)
 def contributor(contributor_factory, name: str, email: str):
-    return contributor_factory().create(name, email)
+    return contributor_factory.create(name, email)
 
 
 @pytest.fixture(autouse=True)
 def commit_factory():
-    class Factory:
-        def create(self, faker, repo, binsha=None):
+    class CommitFactory:
+        @staticmethod
+        def create(faker, repo, binsha=None):
             binsha = str.encode(
                 faker.sha1(raw_output=False)[:20]
             ) if not binsha else binsha
@@ -58,12 +59,12 @@ def commit_factory():
                 binsha=binsha
             )
 
-    return Factory
+    return CommitFactory
 
 
 @pytest.fixture(autouse=True)
 def commit(commit_factory, faker, remote_url):
-    return commit_factory().create(faker, remote_url)
+    return commit_factory.create(faker, remote_url)
 
 
 @pytest.fixture(autouse=True, scope="function")
