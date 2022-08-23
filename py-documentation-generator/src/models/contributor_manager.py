@@ -75,6 +75,11 @@ class ContributorManager:
 
     @logger.catch
     def _list_contributors(self):
+        """List all contributors found in repo
+
+        Returns:
+            List[Contributor]: list of all contributors
+        """
         commits = list(self._repo.iter_commits("HEAD"))
         logger.info(
             "Generating list of contributors from {} commit(s).",
