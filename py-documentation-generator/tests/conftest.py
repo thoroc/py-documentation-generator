@@ -35,7 +35,7 @@ def author(name, email):
 
 
 @pytest.fixture(autouse=True)
-def fake_local_repo(tmp_path_factory, faker):
+def local_repo(tmp_path_factory, faker):
     tmp_dir = tmp_path_factory.mktemp("data")
 
     repo = Repo.init(tmp_dir, initial_branch=f"{faker.word()}")
