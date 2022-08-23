@@ -37,7 +37,7 @@ class ContributorManager:
             ) from exc_info
         self._mail_map_path = Path(mail_map_file)
         self._exclude = exclude if exclude else []
-        self._list_contributors()
+        self._init_contributors()
 
     @property
     def contributors(self):
@@ -74,32 +74,33 @@ class ContributorManager:
         return None
 
     @logger.catch
-    def _list_contributors(self):
-        """List all contributors found in repo
-
-        Returns:
-            List[Contributor]: list of all contributors
-        """
+    def _init_contributors(self):
+        """List all contributors found in repo"""
         commits = list(self._repo.iter_commits("HEAD"))
         logger.info(
             "Generating list of contributors from {} commit(s).",
             len(commits)
         )
         for commit in commits:
-            author_name = commit.author.name
-            author_email = commit.author.email
+            contributor_name = commit.author.name
+            contributor_email = commit.author.email
+
+            logger.info(
+                "Commit: {} created by: {} <{}>",
+                commit, contributor_name, contributor_email
+            )
 
             contributor: Contributor = self._get_contributor(
-                author_name, author_email)
+                contributor_name, contributor_email)
 
-            if author_email not in self._exclude:
+            if contributor_email not in self._exclude:
                 # check if we have a contributor with the same name and email
                 if contributor:
                     logger.info("Found existing contributor={}", contributor)
                     contributor.add_commit(commit)
                 else:
                     contributor = Contributor(
-                        author_name, author_email, [commit])
+                        contributor_name, contributor_email, [commit])
                     logger.info("Found new contributor={}", contributor)
                     self._contributors.append(contributor)
 
