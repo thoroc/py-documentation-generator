@@ -67,6 +67,53 @@ def commit(commit_factory, faker, remote_url):
     return commit_factory.create(faker, remote_url)
 
 
+@pytest.fixture(autouse=True)
+def repo_factory():
+    class RepoFactory:
+        @staticmethod
+        def create(dir_path, faker):
+            faker.random.seed()
+
+            repo = Repo.init(dir_path, initial_branch=f"{faker.word()}")
+
+            contributor = Contributor(
+                name="test-bot",
+                email=f"test-bot@{faker.free_email_domain()}",
+                commits=[]
+            )
+            RepoFactory.commit(
+                faker=faker,
+                dir_path=dir_path,
+                contributor=contributor,
+                message="repo init"
+            )
+            logger.debug("Initialised Repo on: {}", dir_path)
+
+            return repo
+
+        @staticmethod
+        def commit(faker, dir_path, contributor, message=None, file_name=None):
+            message = faker.sentence(nb=10) if not message else message
+            file_name = f"{faker.word()}.txt" if not file_name else file_name
+            repo = Repo(dir_path)
+
+            file_path = Path(dir_path) / file_name
+            file_path.write_text(message)
+
+            repo.git.add(file_path)
+            repo.git.commit("-m", message, author=str(contributor))
+
+            logger.debug(
+                "Committed new file '{}' with message: '{}'",
+                file_name,
+                message
+            )
+
+            return repo.head.commit
+
+    return RepoFactory
+
+
 @pytest.fixture(autouse=True, scope="function")
 def local_repo(tmp_path_factory, faker):
     faker.random.seed()

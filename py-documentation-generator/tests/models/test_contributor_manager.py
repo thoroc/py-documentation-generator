@@ -6,20 +6,16 @@ from src.models.contributor import Contributor
 from src.models.contributor_manager import ContributorManager
 
 
-def test__get_contrinutor_found(faker, contributor: Contributor, local_repo: Repo):
+def test__get_contrinutor_found(faker, contributor: Contributor, repo_factory, tmp_path_factory):
     # Arrange
-    file_to_commit = Path(local_repo.working_tree_dir) / "test.txt"
-    file_to_commit.write_text(faker.sentence(nb_words=10))
-    local_repo.git.add(str(file_to_commit))
-    local_repo.git.commit(
-        "-m", "test commit", author=str(contributor)
-    )
+    tmp_dir = tmp_path_factory.mktemp("data")
+    repo = repo_factory.create(tmp_dir, faker)
 
-    for item in Path(local_repo.working_tree_dir).iterdir():
+    for item in Path(repo.working_tree_dir).iterdir():
         logger.debug(item)
 
     manager = ContributorManager(
-        repo_path=local_repo.working_tree_dir
+        repo_path=repo.working_tree_dir
     )
 
     # Act
