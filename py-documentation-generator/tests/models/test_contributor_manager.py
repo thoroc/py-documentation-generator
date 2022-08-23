@@ -16,7 +16,7 @@ def test__get_contrinutor_found(faker, contributor: Contributor, local_repo: Rep
     )
 
     for item in Path(local_repo.working_tree_dir).iterdir():
-        logger.warning(item)
+        logger.debug(item)
 
     manager = ContributorManager(
         repo_path=local_repo.working_tree_dir
@@ -44,7 +44,7 @@ def test__get_contributor_not_found(contributor: Contributor, local_repo: Repo):
     logger.debug("local_repo: {}", local_repo.working_tree_dir)
 
     for item in Path(local_repo.working_tree_dir).iterdir():
-        logger.warning(item)
+        logger.debug(item)
 
     commits = list(local_repo.iter_commits("HEAD"))
 

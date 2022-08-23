@@ -19,7 +19,7 @@ def name(faker):
 
 
 @pytest.fixture(autouse=True)
-def email(faker, name):
+def email(faker, name: str):
     faker.random.seed()
     joining_char = faker.random_element(elements=[".", "-", "_", ""])
     email_local_part = f"{joining_char.join(name.lower().split(' '))}"
@@ -27,12 +27,22 @@ def email(faker, name):
 
 
 @pytest.fixture(autouse=True)
-def contributor(name, email):
-    return Contributor(
-        name=name,
-        email=email,
-        commits=[]
-    )
+def contributor_factory():
+    class Factory:
+        def create(self, name, email):
+            contributor = Contributor(
+                name=name,
+                email=email,
+                commits=[]
+            )
+            return contributor
+
+    return Factory
+
+
+@pytest.fixture(autouse=True)
+def contributor(contributor_factory, name: str, email: str):
+    return contributor_factory().create(name, email)
 
 
 @pytest.fixture(autouse=True, scope="function")
