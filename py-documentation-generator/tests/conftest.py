@@ -12,17 +12,35 @@ def remote_url(faker):
 
 
 @pytest.fixture(autouse=True)
-def name(faker):
-    faker.random.seed()
-    return faker.name()
+def name_factory():
+    class NameFactory:
+        @staticmethod
+        def create(faker):
+            return faker.name()
+
+    return NameFactory
 
 
 @pytest.fixture(autouse=True)
-def email(faker, name: str):
-    faker.random.seed()
-    joining_char = faker.random_element(elements=[".", "-", "_", ""])
-    email_local_part = f"{joining_char.join(name.lower().split(' '))}"
-    return f"{email_local_part}@{faker.free_email_domain()}"
+def name(faker, name_factory):
+    return name_factory.create(faker)
+
+
+@pytest.fixture(autouse=True)
+def email_factory():
+    class EmailFactory:
+        @staticmethod
+        def create(faker, name):
+            joining_char = faker.random_element(elements=[".", "-", "_", ""])
+            email_local_part = f"{joining_char.join(name.lower().split(' '))}"
+            return f"{email_local_part}@{faker.free_email_domain()}"
+
+    return EmailFactory
+
+
+@pytest.fixture(autouse=True)
+def email(faker, name: str, email_factory):
+    return email_factory.create(faker, name)
 
 
 @pytest.fixture(autouse=True)

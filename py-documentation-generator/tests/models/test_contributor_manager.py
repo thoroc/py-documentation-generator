@@ -69,3 +69,46 @@ def test__init_contributors(faker, contributor: Contributor, repo_factory, tmp_p
     assert len(sut) == 2
     for item in sut:
         assert isinstance(item, Contributor)
+
+
+def test__init_contributors_excluded(
+    faker,
+    name_factory,
+    email_factory,
+    contributor_factory,
+    repo_factory,
+    tmp_path_factory
+):
+    # Arrange
+    tmp_dir = tmp_path_factory.mktemp("data")
+    repo = repo_factory.create(tmp_dir, faker)
+
+    included_name = name_factory.create(faker)
+    included_email = email_factory.create(faker, included_name)
+    included_contributor = contributor_factory.create(
+        included_name,
+        included_email
+    )
+
+    repo_factory.commit(faker, tmp_dir, included_contributor)
+
+    excluded_name = name_factory.create(faker)
+    excluded_email = email_factory.create(faker, excluded_name)
+    excluded_contributor = contributor_factory.create(
+        excluded_name,
+        excluded_email
+    )
+
+    repo_factory.commit(faker, tmp_dir, excluded_contributor)
+
+    # Act
+    manager = ContributorManager(
+        repo_path=repo.working_tree_dir,
+        exclude=[excluded_email]
+    )
+    sut = manager._contributors
+
+    # Assert
+    assert len(sut) == 2
+    for item in sut:
+        assert isinstance(item, Contributor)
