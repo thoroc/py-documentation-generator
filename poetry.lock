@@ -31,10 +31,10 @@ optional = false
 python-versions = ">=3.5"
 
 [package.extras]
-dev = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "mypy (>=0.900,!=0.940)", "pytest-mypy-plugins", "zope.interface", "furo", "sphinx", "sphinx-notfound-page", "pre-commit", "cloudpickle"]
-docs = ["furo", "sphinx", "zope.interface", "sphinx-notfound-page"]
-tests = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "mypy (>=0.900,!=0.940)", "pytest-mypy-plugins", "zope.interface", "cloudpickle"]
-tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "mypy (>=0.900,!=0.940)", "pytest-mypy-plugins", "cloudpickle"]
+dev = ["cloudpickle", "coverage[toml] (>=5.0.2)", "furo", "hypothesis", "mypy (>=0.900,!=0.940)", "pre-commit", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "sphinx", "sphinx-notfound-page", "zope.interface"]
+docs = ["furo", "sphinx", "sphinx-notfound-page", "zope.interface"]
+tests = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy (>=0.900,!=0.940)", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "zope.interface"]
+tests_no_zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy (>=0.900,!=0.940)", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins"]
 
 [[package]]
 name = "autopep8"
@@ -84,7 +84,7 @@ optional = false
 python-versions = "*"
 
 [package.extras]
-test = ["hypothesis (==3.55.3)", "flake8 (==3.7.8)"]
+test = ["flake8 (==3.7.8)", "hypothesis (==3.55.3)"]
 
 [[package]]
 name = "coverage"
@@ -156,7 +156,7 @@ python-versions = "*"
 
 [[package]]
 name = "flake8-bugbear"
-version = "22.8.22"
+version = "22.8.23"
 description = "A plugin for flake8 finding likely bugs and design problems in your program. Contains warnings that don't belong in pyflakes and pycodestyle."
 category = "dev"
 optional = false
@@ -348,7 +348,7 @@ colorama = {version = ">=0.3.4", markers = "sys_platform == \"win32\""}
 win32-setctime = {version = ">=1.0.0", markers = "sys_platform == \"win32\""}
 
 [package.extras]
-dev = ["sphinx-rtd-theme (>=0.4.3)", "sphinx-autobuild (>=0.7.1)", "Sphinx (>=4.1.1)", "isort (>=5.1.1)", "black (>=19.10b0)", "pytest-cov (>=2.7.1)", "pytest (>=4.6.2)", "tox (>=3.9.0)", "flake8 (>=3.7.7)", "docutils (==0.16)", "colorama (>=0.3.4)"]
+dev = ["Sphinx (>=4.1.1)", "black (>=19.10b0)", "colorama (>=0.3.4)", "docutils (==0.16)", "flake8 (>=3.7.7)", "isort (>=5.1.1)", "pytest (>=4.6.2)", "pytest-cov (>=2.7.1)", "sphinx-autobuild (>=0.7.1)", "sphinx-rtd-theme (>=0.4.3)", "tox (>=3.9.0)"]
 
 [[package]]
 name = "mako"
@@ -443,8 +443,8 @@ parse = {version = ">=1.18.0", markers = "python_version >= \"3.0\""}
 six = ">=1.11"
 
 [package.extras]
+develop = ["coverage (>=4.4)", "pytest (<5.0)", "pytest (>=5.0)", "pytest-cov", "pytest-html (>=1.19.0)", "tox (>=2.8)"]
 docs = ["sphinx (>=1.2)"]
-develop = ["pytest (>=5.0)", "pytest (<5.0)", "tox (>=2.8)", "pytest-cov", "pytest-html (>=1.19.0)", "coverage (>=4.4)"]
 
 [[package]]
 name = "pep8-naming"
@@ -466,8 +466,8 @@ optional = false
 python-versions = ">=3.6"
 
 [package.extras]
-testing = ["pytest-benchmark", "pytest"]
-dev = ["tox", "pre-commit"]
+dev = ["pre-commit", "tox"]
+testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
 name = "pprintpp"
@@ -532,7 +532,7 @@ optional = false
 python-versions = ">=3.6.8"
 
 [package.extras]
-diagrams = ["railroad-diagrams", "jinja2"]
+diagrams = ["jinja2", "railroad-diagrams"]
 
 [[package]]
 name = "pytest"
@@ -572,7 +572,7 @@ py = "*"
 pytest = ">=5.0"
 
 [package.extras]
-testing = ["tox", "mypy (==0.910)"]
+testing = ["mypy (==0.910)", "tox"]
 
 [[package]]
 name = "pytest-clarity"
@@ -600,7 +600,7 @@ coverage = {version = ">=5.2.1", extras = ["toml"]}
 pytest = ">=4.6"
 
 [package.extras]
-testing = ["virtualenv", "pytest-xdist", "six", "process-tests", "hunter", "fields"]
+testing = ["fields", "hunter", "process-tests", "pytest-xdist", "six", "virtualenv"]
 
 [[package]]
 name = "pytest-logger"
@@ -626,7 +626,7 @@ python-versions = ">=3.7"
 pytest = ">=5.0"
 
 [package.extras]
-dev = ["pre-commit", "tox", "pytest-asyncio"]
+dev = ["pre-commit", "pytest-asyncio", "tox"]
 
 [[package]]
 name = "python-dateutil"
@@ -727,7 +727,7 @@ dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "dea40183fae808ea295bb324f27f3888b46c05e71fbed86bd8f48999a075dadf"
+content-hash = "68dd38a4945688fc2aa56750120acd361b10e89eedf598b95f79ddb8538440c6"
 
 [metadata.files]
 astor = [
@@ -836,8 +836,8 @@ flake8-blind-except = [
     {file = "flake8-blind-except-0.2.1.tar.gz", hash = "sha256:f25a575a9dcb3eeb3c760bf9c22db60b8b5a23120224ed1faa9a43f75dd7dd16"},
 ]
 flake8-bugbear = [
-    {file = "flake8-bugbear-22.8.22.tar.gz", hash = "sha256:1d240736dc93ecad9ff21e1d521283b9461d132b3ff2170569bd5ff3dacda385"},
-    {file = "flake8_bugbear-22.8.22-py3-none-any.whl", hash = "sha256:b5718bf5d0d28a4cfd15054f4706fc2936f7339ed8366b919a1979eb5df50764"},
+    {file = "flake8-bugbear-22.8.23.tar.gz", hash = "sha256:de0717d11124a082118dd08387b34fd86b2721642ec2d8e92be66cfa5ea7c445"},
+    {file = "flake8_bugbear-22.8.23-py3-none-any.whl", hash = "sha256:1b0ebe0873d1cd55bf9f1588bfcb930db339018ef44a3981a26532daa9fd14a8"},
 ]
 flake8-builtins = [
     {file = "flake8-builtins-1.5.3.tar.gz", hash = "sha256:09998853b2405e98e61d2ff3027c47033adbdc17f9fe44ca58443d876eb00f3b"},
