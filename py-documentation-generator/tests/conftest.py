@@ -93,7 +93,7 @@ def repo_factory():
 
         @staticmethod
         def commit(faker, dir_path, contributor, message=None, file_name=None):
-            message = faker.sentence(nb=10) if not message else message
+            message = faker.sentence(nb_words=10) if not message else message
             file_name = f"{faker.word()}.txt" if not file_name else file_name
             repo = Repo(dir_path)
 
@@ -114,22 +114,7 @@ def repo_factory():
     return RepoFactory
 
 
-@pytest.fixture(autouse=True, scope="function")
-def local_repo(tmp_path_factory, faker):
-    faker.random.seed()
+@pytest.fixture(autouse=True)
+def repo(faker, tmp_path_factory, repo_factory):
     tmp_dir = tmp_path_factory.mktemp("data")
-
-    repo = Repo.init(tmp_dir, initial_branch=f"{faker.word()}")
-
-    file = Path(tmp_dir) / "README.md"
-    file.write_text("# README")
-
-    repo.git.add(file)
-    repo.git.commit("-m", "initial commit",
-                    author=f"test-bot <test-bot@{faker.free_email_domain()}>")
-
-    logger.debug("Initialised Repo on: {}", tmp_dir)
-
-    yield repo
-
-    repo.git.rm(tmp_dir, r=True)
+    return repo_factory.create(tmp_dir, faker)
