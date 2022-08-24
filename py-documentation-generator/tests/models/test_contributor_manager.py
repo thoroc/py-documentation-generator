@@ -23,8 +23,7 @@ def test__get_contrinutor_found(faker, contributor: Contributor, repo_factory, t
     )
 
     # Assert
-    assert sut.name == contributor.name
-    assert sut.email == contributor.email
+    assert sut == contributor
 
 
 def test__get_contributor_not_found(contributor: Contributor, repo: Repo):
@@ -52,3 +51,21 @@ def test__get_contributor_not_found(contributor: Contributor, repo: Repo):
 
     # Assert
     assert sut is None
+
+
+def test__init_contributors(faker, contributor: Contributor, repo_factory, tmp_path_factory):
+    # Arrange
+    tmp_dir = tmp_path_factory.mktemp("data")
+    repo = repo_factory.create(tmp_dir, faker)
+    repo_factory.commit(faker, tmp_dir, contributor)
+
+    manager = ContributorManager(
+        repo_path=repo.working_tree_dir
+    )
+    # Act
+    sut = manager._contributors
+
+    # Assert
+    assert len(sut) == 2
+    for item in sut:
+        assert isinstance(item, Contributor)

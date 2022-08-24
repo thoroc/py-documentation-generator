@@ -36,6 +36,9 @@ def contributor_factory():
                 email=email,
                 commits=commits
             )
+
+            logger.debug("Created new Contributor: {}", contributor)
+
             return contributor
 
     return ContributorFactory
@@ -54,10 +57,14 @@ def commit_factory():
             binsha = str.encode(
                 faker.sha1(raw_output=False)[:20]
             ) if not binsha else binsha
-            return Commit(
+            commit = Commit(
                 repo=repo,
                 binsha=binsha
             )
+
+            logger.debug("Created new Commit: {}", commit)
+
+            return commit
 
     return CommitFactory
 
@@ -73,8 +80,9 @@ def repo_factory():
         @staticmethod
         def create(dir_path, faker):
             faker.random.seed()
-
             repo = Repo.init(dir_path, initial_branch=f"{faker.word()}")
+
+            logger.debug("Initialised Repo on: {}", dir_path)
 
             contributor = Contributor(
                 name="test-bot",
@@ -85,9 +93,9 @@ def repo_factory():
                 faker=faker,
                 dir_path=dir_path,
                 contributor=contributor,
-                message="repo init"
+                message="repo init",
+                file_name="README.md"
             )
-            logger.debug("Initialised Repo on: {}", dir_path)
 
             return repo
 

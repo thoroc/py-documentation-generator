@@ -4,16 +4,15 @@ from git import Commit
 from loguru import logger
 
 
-@logger.catch
 class Contributor:
     _name: str
     _email: str
     _commits: List[Commit]
 
-    def __init__(self, name: str, email: str, commits: List[Commit]):
+    def __init__(self, name: str, email: str, commits: List[Commit] = None):
         self._name = name
         self._email = email
-        self._commits = commits
+        self._commits = [] if not commits else commits
 
     def add_commit(self, commit: Commit):
         """Add a Commit to the list of existing Commit.

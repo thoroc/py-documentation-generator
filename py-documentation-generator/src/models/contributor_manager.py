@@ -9,7 +9,6 @@ from src.models.contributor import Contributor
 from src.models import InvalidGitRepositoryException
 
 
-@logger.catch
 class ContributorManager:
     _repo_path: Path
     _repo: Repo
@@ -37,6 +36,10 @@ class ContributorManager:
             ) from exc_info
         self._mail_map_path = Path(mail_map_file)
         self._exclude = exclude if exclude else []
+        self._contributors = []
+
+        logger.debug(self._contributors)
+
         self._init_contributors()
 
     @property
@@ -91,7 +94,9 @@ class ContributorManager:
             )
 
             contributor: Contributor = self._get_contributor(
-                contributor_name, contributor_email)
+                contributor_name,
+                contributor_email
+            )
 
             if contributor_email not in self._exclude:
                 # check if we have a contributor with the same name and email
@@ -121,7 +126,7 @@ class ContributorManager:
                 self._sort_contributors()
 
             for contributor in self._contributors:
-                logger.debug(
+                logger.info(
                     "Writing mailmap entry for contributor={}",
                     contributor
                 )
