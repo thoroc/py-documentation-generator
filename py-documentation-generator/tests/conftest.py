@@ -1,8 +1,19 @@
 from pathlib import Path
+from random import randint
 from git import Repo, Commit
 import pytest
 from loguru import logger
+from faker.providers import BaseProvider
+from faker import Faker
 from src.models.contributor import Contributor
+
+
+@pytest.fixture(autouse=True)
+def faker_init(faker):
+    # fake = Faker("en_GB")
+    faker.add_provider(ContributorProvider)
+    seed = randint(10001, 99999)
+    faker.seed_instance(seed)
 
 
 @pytest.fixture(autouse=True)
@@ -144,3 +155,29 @@ def repo_factory():
 def repo(faker, tmp_path_factory, repo_factory):
     tmp_dir = tmp_path_factory.mktemp("data")
     return repo_factory.create(tmp_dir, faker)
+
+
+class ContributorProvider(BaseProvider):
+
+    __provider__ = "contributor"
+    __lang__ = "en_GB"
+
+    def _email(self, name):
+        joining_char = self.generator.random_element(
+            elements=[".", "-", "_", ""])
+        email_local_part = f"{joining_char.join(name.lower().split(' '))}"
+
+        return f"{email_local_part}@{self.generator.free_email_domain()}"
+
+    def contributor(self, name=None, email=None, commits=None):
+        name = name if name else self.generator.name()
+        email = email if email else self._email(name=name)
+        commits = commits if commits else []
+
+        contributor = Contributor(
+            name=name,
+            email=email,
+            commits=commits
+        )
+
+        return contributor

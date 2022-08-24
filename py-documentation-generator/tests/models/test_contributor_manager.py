@@ -6,8 +6,10 @@ from src.models.contributor import Contributor
 from src.models.contributor_manager import ContributorManager
 
 
-def test__get_contrinutor_found(faker, contributor: Contributor, repo_factory, tmp_path_factory):
+def test__get_contrinutor_found(faker, repo_factory, tmp_path_factory):
     # Arrange
+    contributor = faker.contributor()
+
     tmp_dir = tmp_path_factory.mktemp("data")
     repo = repo_factory.create(tmp_dir, faker)
     repo_factory.commit(faker, tmp_dir, contributor)
@@ -26,8 +28,10 @@ def test__get_contrinutor_found(faker, contributor: Contributor, repo_factory, t
     assert sut == contributor
 
 
-def test__get_contributor_not_found(contributor: Contributor, repo: Repo):
+def test__get_contributor_not_found(faker, repo: Repo):
     # Arrange
+    contributor = faker.contributor()
+
     manager = ContributorManager(
         repo_path=repo.working_tree_dir
     )
@@ -53,8 +57,9 @@ def test__get_contributor_not_found(contributor: Contributor, repo: Repo):
     assert sut is None
 
 
-def test__init_contributors(faker, contributor: Contributor, repo_factory, tmp_path_factory):
+def test__init_contributors(faker, repo_factory, tmp_path_factory):
     # Arrange
+    contributor = faker.contributor()
     tmp_dir = tmp_path_factory.mktemp("data")
     repo = repo_factory.create(tmp_dir, faker)
     repo_factory.commit(faker, tmp_dir, contributor)
@@ -75,7 +80,6 @@ def test__init_contributors_excluded(
     faker,
     name_factory,
     email_factory,
-    contributor_factory,
     repo_factory,
     tmp_path_factory
 ):
@@ -85,7 +89,7 @@ def test__init_contributors_excluded(
 
     included_name = name_factory.create(faker)
     included_email = email_factory.create(faker, included_name)
-    included_contributor = contributor_factory.create(
+    included_contributor = faker.contributor(
         included_name,
         included_email
     )
@@ -94,7 +98,7 @@ def test__init_contributors_excluded(
 
     excluded_name = name_factory.create(faker)
     excluded_email = email_factory.create(faker, excluded_name)
-    excluded_contributor = contributor_factory.create(
+    excluded_contributor = faker.contributor(
         excluded_name,
         excluded_email
     )

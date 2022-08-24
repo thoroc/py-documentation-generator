@@ -1,9 +1,12 @@
 from git import Commit
 from src.models.contributor import Contributor
+from loguru import logger
+import pytest
 
 
-def test_one_commit(contributor: Contributor, commit: Commit):
+def test_one_commit(faker, commit: Commit):
     # Arrange
+    contributor = faker.contributor()
 
     # Act
     contributor.add_commit(commit)
@@ -12,12 +15,14 @@ def test_one_commit(contributor: Contributor, commit: Commit):
     assert commit == contributor.commits[0]
 
 
-def test_add_new_commit(faker, remote_url, contributor: Contributor, commit_factory):
+def test_add_new_commit(faker, remote_url, commit_factory):
     # Arrange
     existing_commits = []
     for _ in range(0, 3):
         existing_commits.append(
             commit_factory.create(faker=faker, repo=remote_url))
+
+    contributor = faker.contributor()
     contributor._commits = existing_commits
 
     # Act
@@ -28,7 +33,7 @@ def test_add_new_commit(faker, remote_url, contributor: Contributor, commit_fact
     assert new_commit in contributor.commits
 
 
-def test_add_existing_commit(faker, remote_url, contributor: Contributor, commit_factory):
+def test_add_existing_commit(faker, remote_url, commit_factory):
     # Arrange
     commit_1 = commit_factory.create(faker=faker, repo=remote_url)
     commit_2 = commit_factory.create(faker=faker, repo=remote_url)
@@ -36,6 +41,7 @@ def test_add_existing_commit(faker, remote_url, contributor: Contributor, commit
     commit_3 = commit_factory.create(
         faker=faker, repo=remote_url, binsha=binhash_3
     )
+    contributor = faker.contributor()
     contributor._commits = [commit_1, commit_2, commit_3]
 
     # Act
@@ -48,13 +54,14 @@ def test_add_existing_commit(faker, remote_url, contributor: Contributor, commit
     assert 3 == len(contributor.commits)
 
 
-def test_add_multiple_commits(faker, remote_url, contributor: Contributor, commit_factory):
+def test_add_multiple_commits(faker, remote_url, commit_factory):
     # Arrange
     existing_commits = []
     for _ in range(0, 3):
         existing_commits.append(
             commit_factory.create(faker=faker, repo=remote_url)
         )
+    contributor = faker.contributor()
     contributor._commits = existing_commits
 
     # Act
@@ -68,12 +75,13 @@ def test_add_multiple_commits(faker, remote_url, contributor: Contributor, commi
     assert 6 == len(contributor.commits)
 
 
-def test_add_multiple_existing_commits(faker, remote_url, contributor: Contributor, commit_factory):
+def test_add_multiple_existing_commits(faker, remote_url, commit_factory):
     # Arrange
     existing_commits = []
     for _ in range(0, 3):
         existing_commits.append(
             commit_factory.create(faker=faker, repo=remote_url))
+    contributor = faker.contributor()
     contributor._commits = existing_commits
 
     # Act
@@ -84,16 +92,16 @@ def test_add_multiple_existing_commits(faker, remote_url, contributor: Contribut
     assert 3 == len(contributor.commits)
 
 
-def test_equivalence(faker, remote_url, name, email, contributor_factory, commit_factory):
+def test_equivalence(faker, remote_url, name, email, commit_factory):
     # Arrange
 
     # Act
-    sut_a = contributor_factory.create(
+    sut_a = faker.contributor(
         name=name,
         email=email,
         commits=[commit_factory.create(faker=faker, repo=remote_url)]
     )
-    sut_b = contributor_factory.create(
+    sut_b = faker.contributor(
         name=name,
         email=email,
         commits=[commit_factory.create(faker=faker, repo=remote_url)]
