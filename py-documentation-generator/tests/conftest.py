@@ -56,30 +56,6 @@ def email(faker, name: str, email_factory):
 
 
 @pytest.fixture(autouse=True)
-def contributor_factory():
-    class ContributorFactory:
-        @staticmethod
-        def create(name, email, commits=None):
-            commits = [] if not commits else commits
-            contributor = Contributor(
-                name=name,
-                email=email,
-                commits=commits
-            )
-
-            logger.debug("Created new Contributor: {}", contributor)
-
-            return contributor
-
-    return ContributorFactory
-
-
-@pytest.fixture(autouse=True)
-def contributor(contributor_factory, name: str, email: str):
-    return contributor_factory.create(name, email)
-
-
-@pytest.fixture(autouse=True)
 def commit_factory():
     class CommitFactory:
         @staticmethod
@@ -102,60 +78,6 @@ def commit_factory():
 @pytest.fixture(autouse=True)
 def commit(commit_factory, faker, remote_url):
     return commit_factory.create(faker, remote_url)
-
-
-@pytest.fixture(autouse=True)
-def repo_factory():
-    class RepoFactory:
-        @staticmethod
-        def create(dir_path, faker):
-            faker.random.seed()
-            repo = Repo.init(dir_path, initial_branch=f"{faker.word()}")
-
-            logger.debug("Initialised Repo on: {}", dir_path)
-
-            contributor = Contributor(
-                name="test-bot",
-                email=f"test-bot@{faker.free_email_domain()}",
-                commits=[]
-            )
-            RepoFactory.commit(
-                faker=faker,
-                dir_path=dir_path,
-                contributor=contributor,
-                message="repo init",
-                file_name="README.md"
-            )
-
-            return repo
-
-        @staticmethod
-        def commit(faker, dir_path, contributor, message=None, file_name=None):
-            message = faker.sentence(nb_words=10) if not message else message
-            file_name = f"{faker.word()}.txt" if not file_name else file_name
-            repo = Repo(dir_path)
-
-            file_path = Path(dir_path) / file_name
-            file_path.write_text(message)
-
-            repo.git.add(file_path)
-            repo.git.commit("-m", message, author=str(contributor))
-
-            logger.debug(
-                "Committed new file '{}' with message: '{}'",
-                file_name,
-                message
-            )
-
-            return repo.head.commit
-
-    return RepoFactory
-
-
-@pytest.fixture(autouse=True)
-def repo(faker, tmp_path_factory, repo_factory):
-    tmp_dir = tmp_path_factory.mktemp("data")
-    return repo_factory.create(tmp_dir, faker)
 
 
 class ContributorProvider(BaseProvider):

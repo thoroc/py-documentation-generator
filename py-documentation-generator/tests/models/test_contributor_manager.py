@@ -28,9 +28,11 @@ def test__get_contrinutor_found(faker, tmp_path_factory):
     assert sut == contributor
 
 
-def test__get_contributor_not_found(faker, repo: Repo):
+def test__get_contributor_not_found(faker, tmp_path_factory):
     # Arrange
     contributor = faker.contributor()
+    tmp_dir = tmp_path_factory.mktemp("data")
+    repo = faker.repository(dir_path=tmp_dir)
 
     manager = ContributorManager(
         repo_path=repo.working_tree_dir
