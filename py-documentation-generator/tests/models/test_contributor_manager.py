@@ -6,13 +6,13 @@ from src.models.contributor import Contributor
 from src.models.contributor_manager import ContributorManager
 
 
-def test__get_contrinutor_found(faker, repo_factory, tmp_path_factory):
+def test__get_contrinutor_found(faker, tmp_path_factory):
     # Arrange
     contributor = faker.contributor()
 
     tmp_dir = tmp_path_factory.mktemp("data")
-    repo = repo_factory.create(tmp_dir, faker)
-    repo_factory.commit(faker, tmp_dir, contributor)
+    repo = faker.repository(dir_path=tmp_dir)
+    faker.commit(dir_path=tmp_dir, contributor=contributor)
 
     manager = ContributorManager(
         repo_path=repo.working_tree_dir
@@ -57,12 +57,12 @@ def test__get_contributor_not_found(faker, repo: Repo):
     assert sut is None
 
 
-def test__init_contributors(faker, repo_factory, tmp_path_factory):
+def test__init_contributors(faker, tmp_path_factory):
     # Arrange
     contributor = faker.contributor()
     tmp_dir = tmp_path_factory.mktemp("data")
-    repo = repo_factory.create(tmp_dir, faker)
-    repo_factory.commit(faker, tmp_dir, contributor)
+    repo = faker.repository(dir_path=tmp_dir)
+    faker.commit(dir_path=tmp_dir, contributor=contributor)
 
     manager = ContributorManager(
         repo_path=repo.working_tree_dir
@@ -80,12 +80,11 @@ def test__init_contributors_excluded(
     faker,
     name_factory,
     email_factory,
-    repo_factory,
     tmp_path_factory
 ):
     # Arrange
     tmp_dir = tmp_path_factory.mktemp("data")
-    repo = repo_factory.create(tmp_dir, faker)
+    repo = faker.repository(dir_path=tmp_dir)
 
     included_name = name_factory.create(faker)
     included_email = email_factory.create(faker, included_name)
@@ -94,7 +93,7 @@ def test__init_contributors_excluded(
         included_email
     )
 
-    repo_factory.commit(faker, tmp_dir, included_contributor)
+    faker.commit(dir_path=tmp_dir, contributor=included_contributor)
 
     excluded_name = name_factory.create(faker)
     excluded_email = email_factory.create(faker, excluded_name)
@@ -103,7 +102,7 @@ def test__init_contributors_excluded(
         excluded_email
     )
 
-    repo_factory.commit(faker, tmp_dir, excluded_contributor)
+    faker.commit(dir_path=tmp_dir, contributor=excluded_contributor)
 
     # Act
     manager = ContributorManager(
