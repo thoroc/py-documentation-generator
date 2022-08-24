@@ -17,75 +17,14 @@ def faker_init(faker):
     faker.seed_instance(seed)
 
 
-@pytest.fixture(autouse=True)
-def remote_url(faker):
-    faker.random.seed()
-    return f"https://{faker.hostname()}/{faker.word()}/{faker.word()}"
-
-
-@pytest.fixture(autouse=True)
-def name_factory():
-    class NameFactory:
-        @staticmethod
-        def create(faker):
-            return faker.name()
-
-    return NameFactory
-
-
-@pytest.fixture(autouse=True)
-def name(faker, name_factory):
-    return name_factory.create(faker)
-
-
-@pytest.fixture(autouse=True)
-def email_factory():
-    class EmailFactory:
-        @staticmethod
-        def create(faker, name):
-            joining_char = faker.random_element(elements=[".", "-", "_", ""])
-            email_local_part = f"{joining_char.join(name.lower().split(' '))}"
-            return f"{email_local_part}@{faker.free_email_domain()}"
-
-    return EmailFactory
-
-
-@pytest.fixture(autouse=True)
-def email(faker, name: str, email_factory):
-    return email_factory.create(faker, name)
-
-
-@pytest.fixture(autouse=True)
-def commit_factory():
-    class CommitFactory:
-        @staticmethod
-        def create(faker, repo, binsha=None):
-            binsha = str.encode(
-                faker.sha1(raw_output=False)[:20]
-            ) if not binsha else binsha
-            commit = Commit(
-                repo=repo,
-                binsha=binsha
-            )
-
-            logger.debug("Created new Commit: {}", commit)
-
-            return commit
-
-    return CommitFactory
-
-
-@pytest.fixture(autouse=True)
-def commit(commit_factory, faker, remote_url):
-    return commit_factory.create(faker, remote_url)
-
-
 class ContributorProvider(BaseProvider):
 
+    __provider__ = "email_from_name"
     __provider__ = "contributor"
+    __provider__ = "dummy_commit"
     __lang__ = "en_GB"
 
-    def _email(self, name):
+    def email_from_name(self, name):
         joining_char = self.generator.random_element(
             elements=[".", "-", "_", ""])
         email_local_part = f"{joining_char.join(name.lower().split(' '))}"
@@ -94,7 +33,7 @@ class ContributorProvider(BaseProvider):
 
     def contributor(self, name=None, email=None, commits=None):
         name = name if name else self.generator.name()
-        email = email if email else self._email(name=name)
+        email = email if email else self.email_from_name(name=name)
         commits = commits if commits else []
 
         contributor = Contributor(
@@ -104,6 +43,19 @@ class ContributorProvider(BaseProvider):
         )
 
         return contributor
+
+    def dummy_commit(self, repo=None, binsha=None):
+        repo = repo if repo else f"https://{self.generator.hostname()}/{self.generator.word()}/{self.generator.word()}"
+        binsha = binsha if binsha else str.encode(
+            self.generator.sha1(raw_output=False)[:20]
+        )
+
+        commit = Commit(
+            repo=repo,
+            binsha=binsha
+        )
+
+        return commit
 
 
 class GitProvider(BaseProvider):
