@@ -12,3 +12,7 @@ class MissingPackageException(Exception):
 
 class MissingModuleFilesException(Exception):
     """Missing module files"""
+
+
+class InvalidGitRepositoryException(Exception):
+    """Invalid git repository"""

@@ -68,6 +68,14 @@ jobs:
         run: poetry add -D pytest-github-actions-annotate-failures
 
       #----------------------------------------------
+      #    inform git of who is running the tests
+      #----------------------------------------------
+      - name: Before Install
+        run: |
+          git config --global user.email "dependabot@example.com"
+          git config --global user.name "dependabot"
+
+      #----------------------------------------------
       #              run test suite
       #----------------------------------------------
       - name: Run tests
