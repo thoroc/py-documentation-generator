@@ -53,7 +53,7 @@ def test__init_contributors(faker, tmp_path_factory):
     manager = ContributorManager(
         repo_path=repo.working_tree_dir
     )
-    sut = manager._contributors
+    sut = manager.contributors
 
     # Assert
     assert len(sut) == 2
@@ -77,7 +77,7 @@ def test__init_contributors_excluded(faker, tmp_path_factory):
         repo_path=repo.working_tree_dir,
         exclude=[excluded_contributor.email]
     )
-    sut = manager._contributors
+    sut = manager.contributors
 
     # Assert
     assert len(sut) == 2
@@ -99,7 +99,39 @@ def test__init_contributors_exists(faker, tmp_path_factory):
     sut = manager._get_contributor(contributor.name, contributor.email)
 
     # Assert
-    assert sut in manager._contributors
+    assert sut in manager.contributors
     assert len(sut.commits) == 2
     # reverse order (git history)
     assert sut.commits == [commit_2, commit_1]
+
+
+def test__sort_contributors(faker, tmp_path_factory):
+    # Arrange
+    tmp_dir = tmp_path_factory.mktemp("data")
+    repo = faker.repository(dir_path=tmp_dir)
+
+    peter = faker.contributor(name="Peter Griffin")
+    faker.commit(dir_path=tmp_dir, contributor=peter)
+    lois = faker.contributor(name="Lois Griffin")
+    faker.commit(dir_path=tmp_dir, contributor=lois)
+    stewie = faker.contributor(name="Stewie Griffin")
+    faker.commit(dir_path=tmp_dir, contributor=stewie)
+    brian = faker.contributor(name="Brian Griffin")
+    faker.commit(dir_path=tmp_dir, contributor=brian)
+    meg = faker.contributor(name="Meg Griffin")
+    faker.commit(dir_path=tmp_dir, contributor=meg)
+    chris = faker.contributor(name="Chris Griffin")
+    faker.commit(dir_path=tmp_dir, contributor=chris)
+
+    # Act
+    manager = ContributorManager(
+        repo_path=repo.working_tree_dir,
+        exclude="test-bot@example.com"
+    )
+    sut = manager.contributors
+
+    # Assert
+    # reverse order (git history)
+    assert sut == [chris, meg, brian, stewie, lois, peter]
+    manager._sort_contributors()
+    assert sut == [brian, chris, lois, meg, peter, stewie]

@@ -92,7 +92,7 @@ class GitProvider(BaseProvider):
 
         contributor = Contributor(
             name="test-bot",
-            email=f"test-bot@{self.generator.free_email_domain()}",
+            email="test-bot@example.com",
             commits=[]
         )
 
