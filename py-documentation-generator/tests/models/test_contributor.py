@@ -82,7 +82,7 @@ def test_add_multiple_existing_commits(faker):
 
 def test_equivalence(faker):
     # Arrange
-    name = faker.name()
+    name = faker.family_guys(random=True)
     email = faker.email_from_name(name)
 
     # Act
