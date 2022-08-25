@@ -117,12 +117,16 @@ class ContributorManager:
         self._contributors.sort(key=lambda contributor: contributor.name)
 
     @logger.catch
-    def write_mailmap(self, sorted_contributors: bool = False):
-        """Write mailmap file"""
+    def write_mailmap(self, sort_contributors: bool = False):
+        """Write mailmap file.
+
+        Args:
+            sort_contributors (bool): whether or not to sort contributors by names alphabetically
+        """
         with self._mail_map_path.open("w") as file_buffer:
             logger.info("Writing mailmap file")
 
-            if sorted_contributors:
+            if sort_contributors:
                 self._sort_contributors()
 
             for contributor in self._contributors:

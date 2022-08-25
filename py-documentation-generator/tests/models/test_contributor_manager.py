@@ -135,3 +135,74 @@ def test__sort_contributors(faker, tmp_path_factory):
     assert sut == [chris, meg, brian, stewie, lois, peter]
     manager._sort_contributors()
     assert sut == [brian, chris, lois, meg, peter, stewie]
+
+
+def test_write_mailmap_no_committer(faker, tmp_path_factory):
+    # Arrange
+    tmp_dir = tmp_path_factory.mktemp("data")
+    repo = faker.repository(dir_path=tmp_dir)
+
+    # Act
+    manager = ContributorManager(
+        repo_path=repo.working_tree_dir,
+        exclude="test-bot@example.com"
+    )
+
+    # Assert
+    manager.write_mailmap()
+    with manager._mail_map_path.open() as file_handle:
+        text = file_handle.readline()
+
+        assert text == ""
+
+
+def test_write_mailmap(faker, tmp_path_factory):
+    # Arrange
+    tmp_dir = tmp_path_factory.mktemp("data")
+    repo = faker.repository(dir_path=tmp_dir)
+
+    contributors = []
+    for character in faker.family_guys():
+        contributor = faker.contributor(name=character)
+        faker.commit(dir_path=tmp_dir, contributor=contributor)
+        contributors.append(str(contributor))
+
+    contributors.reverse()
+
+    # Act
+    manager = ContributorManager(
+        repo_path=repo.working_tree_dir,
+        exclude="test-bot@example.com"
+    )
+    manager.write_mailmap()
+
+    # Assert
+    sut = manager._mail_map_path.read_text().rstrip().split("\n")
+
+    assert sut == contributors
+
+
+def test_write_mailmap_sorted(faker, tmp_path_factory):
+    # Arrange
+    tmp_dir = tmp_path_factory.mktemp("data")
+    repo = faker.repository(dir_path=tmp_dir)
+
+    contributors = []
+    for character in faker.family_guys():
+        contributor = faker.contributor(name=character)
+        faker.commit(dir_path=tmp_dir, contributor=contributor)
+        contributors.append(str(contributor))
+
+    contributors.sort()
+
+    # Act
+    manager = ContributorManager(
+        repo_path=repo.working_tree_dir,
+        exclude="test-bot@example.com"
+    )
+    manager.write_mailmap(sort_contributors=True)
+
+    # Assert
+    sut = manager._mail_map_path.read_text().rstrip().split("\n")
+
+    assert sut == contributors
