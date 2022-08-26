@@ -1,4 +1,6 @@
 import pytest
+import ast
+from loguru import logger
 
 from src.generators.logged_message_generator import FuncVisitor
 
@@ -14,14 +16,25 @@ class TestFuncVisitor:
         # Assert
         assert True
 
-    @pytest.mark.skip()
-    def test_visit_call(self):
+    @pytest.mark.parametrize("log_level, node_func_attr", [
+        ("DEBUG", "debug"),
+        ("INFO", "info"),
+        ("WARNING", "warning"),
+        ("ERROR", "error"),
+        ("CRITICAL", "critical")
+    ])
+    def test_visit_call(self, faker, log_level, node_func_attr):
         # Arrange
+        visitor = FuncVisitor(instance_name="logger", log_level=log_level)
+        node = faker.ast_Call("logger", node_func_attr)
+
+        logger.warning(ast.dump(node))
 
         # Act
+        sut = visitor.visit_Call(node)
 
         # Assert
-        assert True
+        assert sut is True
 
     @pytest.mark.parametrize("input, expected", [
         ("  message with some  extra spaces   ", "message with some extra spaces"),

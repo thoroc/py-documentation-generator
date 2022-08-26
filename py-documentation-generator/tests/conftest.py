@@ -1,3 +1,4 @@
+import ast
 from pathlib import Path
 from random import randint
 from git import Repo, Commit
@@ -11,6 +12,7 @@ def faker_init(faker):
     faker.add_provider(CartoonCharactersProvider)
     faker.add_provider(ContributorProvider)
     faker.add_provider(GitProvider)
+    faker.add_provider(AstProvider)
     seed = randint(10001, 99999)
     faker.seed_instance(seed)
 
@@ -141,3 +143,34 @@ class CartoonCharactersProvider(BaseProvider):
             return self.random_element(elements=characters)
 
         return characters
+
+
+class AstProvider(BaseProvider):
+
+    __provider__ = "ast_Call"
+
+    def interpolated_string(self):
+        text = self.generator.text(max_nb_chars=20)
+        split_text = text.split(" ")
+        index = randint(0, len(split_text) - 1)
+        arg = split_text[index]
+        split_text[index] = "{}"
+
+        return (" ".join(split_text), arg)
+
+    def ast_Call(self, func_name_id, func_name_attr):
+        interpolated_string = self.interpolated_string()
+
+        return ast.Call(
+            func=ast.Attribute(
+                value=ast.Name(id=func_name_id, ctx=ast.Load()),
+                attr=func_name_attr,
+                ctx=ast.Load()
+            ),
+            args=[
+                ast.Constant(value=interpolated_string[0]),
+                ast.Name(id=interpolated_string[1], ctx=ast.Load())
+            ],
+            keywords=[],
+            lineno=self.generator.random_int(min=0, max=999)
+        )

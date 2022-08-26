@@ -37,21 +37,53 @@ class FuncVisitor(ast.NodeVisitor):
         Returns:
             None
         """
+
+        # pdb.set_trace()
+        # logger.warning(ast.dump(node))
+
         # skip for func not being an ast.Attribute or value not being an ast.Name
-        if not isinstance(node.func, ast.Attribute) or not isinstance(node.func.value, ast.Name):
-            return
+        if not isinstance(node.func, ast.Attribute):
+            logger.debug(
+                "node.func `{}` is not an ast.Attribute",
+                ast.dump(node.func)
+            )
+            return False
+
+        if not isinstance(node.func.value, ast.Name):
+            logger.debug(
+                "node.func.value `{}` is not an ast.Name",
+                ast.dump(node.func.value)
+            )
+            return False
 
         # exit when the node is NOT an instance_name of logger
         if node.func.value.id != self.instance_name:
-            return
+            logger.debug(
+                "node func value id `{}` is different from instance_name",
+                node.func.value.id
+            )
+            return False
 
         # exit when the method is invalid or not the one we want
-        if self.log_level not in LOG_LEVEL_NANES or node.func.attr != self.log_level.lower():
-            return
+        if self.log_level not in LOG_LEVEL_NANES:
+            logger.debug("log_level `{}` is not valid", self.log_level)
+            return False
+
+        if node.func.attr != self.log_level.lower():
+            logger.debug(
+                "node func attr `{}` is different from log_level `{}`",
+                node.func.attr,
+                self.log_level.lower()
+            )
+            return False
+
+        logger.warning(ast.dump(node))
 
         i_args = [astor.to_source(arg) for arg in node.args]
         ast.NodeVisitor.generic_visit(self, node)
         self.stats[node.lineno] = self._cleanup_node(i_args)
+
+        return True
 
     @logger.catch()
     def _cleanup_node(self, instance_args: List[str]):
