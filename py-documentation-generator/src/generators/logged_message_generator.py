@@ -36,22 +36,21 @@ class FuncVisitor(ast.NodeVisitor):
         Returns:
             None
         """
-        # check for func is an ast.Attribute and value is an ast.Name
-        if isinstance(node.func, ast.Attribute) and isinstance(node.func.value, ast.Name):
-            i_object = node.func.value.id
-            i_method = node.func.attr
-            i_lineno = node.lineno
+        # skip for func not being an ast.Attribute or value not being an ast.Name
+        if not isinstance(node.func, ast.Attribute) or not isinstance(node.func.value, ast.Name):
+            return
 
-            # ensuring the node is an instance_name of logger
-            if i_object == self.instance_name:
+        # exit when the node is NOT an instance_name of logger
+        if node.func.value.id != self.instance_name:
+            return
 
-                # ensuring the method is valid and is the one we want
-                if self.log_level in LOG_LEVEL_NANES and i_method == self.log_level.lower():
-                    i_args = []
-                    for arg in node.args:
-                        i_args.append(astor.to_source(arg))
-                    ast.NodeVisitor.generic_visit(self, node)
-                    self.stats[i_lineno] = self._cleanup_node(i_args)
+        # exit when the method is invalid or not the one we want
+        if self.log_level not in LOG_LEVEL_NANES or node.func.attr != self.log_level.lower():
+            return
+
+        i_args = [astor.to_source(arg) for arg in node.args]
+        ast.NodeVisitor.generic_visit(self, node)
+        self.stats[node.lineno] = self._cleanup_node(i_args)
 
     @logger.catch()
     def _cleanup_node(self, instance_args: List[str]):
