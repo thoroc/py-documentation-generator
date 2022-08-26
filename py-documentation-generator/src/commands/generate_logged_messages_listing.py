@@ -27,11 +27,11 @@ LOG_LEVEL_NANES = [*list(logging._nameToLevel.keys()), "EXCEPTION"]
     show_default=True,
 )
 @click.option(
-    "-d",
+    "-s",
     "--source_dir",
     type=str,
     prompt="Please enter the path to the source code to analyse.",
-    default="src",
+    default="py-documentation-generator",
     show_default=True,
 )
 @click.option(
