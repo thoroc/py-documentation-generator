@@ -2,6 +2,7 @@ import ast
 import re
 import logging
 from pathlib import Path
+from typing import List
 import pandas as pd
 import astor
 from loguru import logger
@@ -69,8 +70,12 @@ class FuncVisitor(ast.NodeVisitor):
 
         logger.debug(arguments)
 
+        message = message.strip("\n\t")
+        message = message.rstrip()
+        message = message.lstrip()
+
         no_extra_spaces_message = re.sub(
-            r"\s+", " ", message.strip("\n\t")
+            r"\s+", " ", message
         )
         no_leading_f_message = re.sub(
             r"^f", "", no_extra_spaces_message
