@@ -44,23 +44,43 @@ class FuncVisitor(ast.NodeVisitor):
 
             # ensuring the node is an instance_name of logger
             if i_object == self.instance_name:
-                no_quotes_message = ""
-                i_args = []
+
                 # ensuring the method is valid and is the one we want
                 if self.log_level in LOG_LEVEL_NANES and i_method == self.log_level.lower():
+                    i_args = []
                     for arg in node.args:
                         i_args.append(astor.to_source(arg))
                     ast.NodeVisitor.generic_visit(self, node)
-                    # clean up i_args
-                    joined_message = " ".join(i_args)
-                    no_extra_spaces_message = re.sub(
-                        r"\s+", " ", joined_message.strip("\n\t"))
-                    no_leading_f_message = re.sub(
-                        r"^f", "", no_extra_spaces_message)
-                    no_quotes_message = re.sub(
-                        r"\"+", "", no_leading_f_message)
+                    self.stats[i_lineno] = self._cleanup_node(i_args)
 
-                    self.stats[i_lineno] = no_quotes_message
+    @logger.catch()
+    def _cleanup_node(self, instance_args: List[str]):
+        """ Clean up node
+
+        Args:
+            instance_args (List[str]): list of strings found for each instance of the message
+
+        Returns:
+            str: cleaned up message
+        """
+        logger.debug("instance_args=`{}`", instance_args)
+
+        message = instance_args[0]
+        arguments = instance_args[1:]
+
+        logger.debug(arguments)
+
+        no_extra_spaces_message = re.sub(
+            r"\s+", " ", message.strip("\n\t")
+        )
+        no_leading_f_message = re.sub(
+            r"^f", "", no_extra_spaces_message
+        )
+        message = re.sub(
+            r"\"+", "", no_leading_f_message
+        )
+
+        return message, [arg.strip("\n\t") for arg in arguments]
 
 
 class LoggedMessageDocumentationGenerator:
@@ -176,10 +196,23 @@ class LoggedMessageDocumentationGenerator:
                     lineno_link = self._generate_link(
                         lineno, file_path, file, lineno)
                     data.append(
-                        [file.name, file_path, lineno_link, f"`{message}`"])
+                        [
+                            file.name,
+                            file_path,
+                            lineno_link,
+                            f"`{message[0]}`",
+                            ",".join(message[1])
+                        ]
+                    )
 
             dataframe = pd.DataFrame(
-                data, columns=["file", "path", "lineno", "message"])  # pylint: disable=C0103
+                data, columns=[
+                    "file",
+                    "path",
+                    "lineno",
+                    "message",
+                    "args"
+                ])  # pylint: disable=C0103
 
             return dataframe.to_markdown(index=False)
 
