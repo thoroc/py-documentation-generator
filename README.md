@@ -1,3 +1,9 @@
+<div align="center">
+
+[![CodeQL Scan](https://github.com/thoroc/py-documentation-generator/actions/workflows/codeql.yml/badge.svg)](https://github.com/thoroc/py-documentation-generator/actions/workflows/codeql.yml)
+
+</div>
+
 This project aim to provide documentation generator.
 
 - mailmap: generate mailmap file
