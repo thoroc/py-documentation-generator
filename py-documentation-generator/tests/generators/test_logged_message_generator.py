@@ -66,7 +66,23 @@ class TestFuncVisitor:
         # Assert
         assert sut is True
 
-    @pytest.mark.parametrize("input, expected", [
+    @pytest.mark.parametrize("node", [
+        (ast.Call(func=ast.Name(id="foo"))),
+        (ast.Call(func=ast.Attribute(value=ast.Attribute()))),
+        (ast.Call(func=ast.Attribute(value=ast.Name(id="foo")))),
+        (ast.Call(func=ast.Attribute(value=ast.Name(id="logger"), attr="warning")))
+    ])
+    def test_visit_call_is_false(self, node):
+        # Arrange
+        visitor = FuncVisitor(instance_name="logger", log_level="INFO")
+
+        # Act
+        sut = visitor.visit_Call(node)
+
+        # Assert
+        assert sut is False
+
+    @ pytest.mark.parametrize("input, expected", [
         ("  message with some  extra spaces   ", "message with some extra spaces"),
         ("  message with leading spaces", "message with leading spaces"),
         ("message with tailing spaces   ", "message with tailing spaces"),
