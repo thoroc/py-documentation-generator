@@ -26,8 +26,14 @@ class FuncVisitor(ast.NodeVisitor):
     ):
         self.stats = {}
         self.instance_name = instance_name
-        self.log_level = log_level
+        self.log_level = self._check_log_level(log_level=log_level)
 
+    def _check_log_level(self, log_level: str):
+        if log_level not in LOG_LEVEL_NANES:
+            logger.exception("log_level `{}` is not valid", log_level)
+            raise ValueError("invalid log level {}", log_level)
+
+        return log_level.lower()
     def visit_Call(self, node: ast.Call):  # pylint: disable=C0103
         """Called when the visitor visits an ast.Call
 
@@ -64,16 +70,12 @@ class FuncVisitor(ast.NodeVisitor):
             )
             return False
 
-        # exit when the method is invalid or not the one we want
-        if self.log_level not in LOG_LEVEL_NANES:
-            logger.debug("log_level `{}` is not valid", self.log_level)
-            return False
-
-        if node.func.attr != self.log_level.lower():
+        # exit when node func attr is not the same as the log_level
+        if node.func.attr != self.log_level:
             logger.debug(
                 "node func attr `{}` is different from log_level `{}`",
                 node.func.attr,
-                self.log_level.lower()
+                self.log_level
             )
             return False
 
@@ -125,7 +127,8 @@ class LoggedMessageDocumentationGenerator:
     Usage:
         instance_name = "logger"
         log_level = "INFO"
-        generator = DocumentationGenerator(source_dir="src", base_url="http://localhost:8000")
+        generator = DocumentationGenerator(
+            source_dir="src", base_url="http://localhost:8000")
         generator.generate(instance_name, log_level)
     """
 
@@ -186,7 +189,8 @@ class LoggedMessageDocumentationGenerator:
             with open(file, "r") as file_buffer:
                 file_content = file_buffer.read()
                 log_content = self._parse_logs(
-                    file_content, instance_name, log_level)
+                    file_content, instance_name, log_level
+                )
                 if log_content:
                     logged_messages[file] = log_content
 
@@ -220,7 +224,8 @@ class LoggedMessageDocumentationGenerator:
         """
 
         logged_messages = self._extract_logged_message(
-            instance_name, log_level)
+            instance_name, log_level
+        )
         data = []
 
         logger.info("Generating markdown table for {}", instance_name)
@@ -230,7 +235,9 @@ class LoggedMessageDocumentationGenerator:
                 for lineno, message in messages.items():
                     file_path = self._get_relative_path(file)
                     lineno_link = self._generate_link(
-                        lineno, file_path, file, lineno)
+                        lineno, file_path, file, lineno
+                    )
+
                     data.append(
                         [
                             file.name,

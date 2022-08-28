@@ -16,12 +16,42 @@ class TestFuncVisitor:
         # Assert
         assert True
 
+    @pytest.mark.parametrize("log_level, expected", [
+        ("DEBUG", "debug"),
+        ("INFO", "info"),
+        ("WARNING", "warning"),
+        ("ERROR", "error"),
+        ("CRITICAL", "critical"),
+        ("EXCEPTION", "exception"),
+    ])
+    def test__check_log_level_ok(self, log_level, expected):
+        # Arrange
+        visitor = FuncVisitor(instance_name="logger", log_level=log_level)
+
+        # Act
+        log_level = visitor._check_log_level(log_level)
+
+        # Assert
+        assert log_level == expected
+
+    def test__check_log_level_exception(self):
+        # Arrange
+        visitor = FuncVisitor(instance_name="logger", log_level="INFO")
+
+        # Act
+        with pytest.raises(ValueError):
+            visitor._check_log_level("foo")
+
+        # Assert
+        assert True
+
     @pytest.mark.parametrize("log_level, node_func_attr", [
         ("DEBUG", "debug"),
         ("INFO", "info"),
         ("WARNING", "warning"),
         ("ERROR", "error"),
-        ("CRITICAL", "critical")
+        ("CRITICAL", "critical"),
+        ("EXCEPTION", "exception"),
     ])
     def test_visit_call(self, faker, log_level, node_func_attr):
         # Arrange
