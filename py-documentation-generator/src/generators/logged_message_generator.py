@@ -141,18 +141,19 @@ class LoggedMessageDocumentationGenerator:
         self,
         source_code: str,
         instance_name: str,
-        log_level: str = LOG_LEVEL_NANES[0],
+        log_level=None,
     ):
         """Parse all logged messages in a source code.
 
         Args:
             source_code (str): the source code to search
             instance_name (str): the instance name to filter the found logged messages
-            log_level (str): the level to filter the found logged messages
+            log_level (str): the level to filter the found logged messages (default to CRITICAL)
 
         Returns:
             dict: a dictionary of logged messages
         """
+        log_level = log_level if log_level else LOG_LEVEL_NANES[0]
         tree = ast.parse(source_code)
         visitor = FuncVisitor(instance_name, log_level)
         visitor.visit(tree)

@@ -4,6 +4,7 @@ from random import randint
 from git import Repo, Commit
 import pytest
 from faker.providers import BaseProvider
+from loguru import logger
 from src.models.contributor import Contributor
 
 
@@ -79,7 +80,9 @@ class GitProvider(BaseProvider):
 
         return repo.head.commit
 
-    def repository(self, dir_path):
+    def repository(self, dir_path=None):
+        dir_path = dir_path if dir_path else Path(
+            __file__).parent.parent.parent
         repo = Repo.init(dir_path, initial_branch=f"{self.generator.word()}")
 
         contributor = Contributor(
@@ -148,18 +151,20 @@ class CartoonCharactersProvider(BaseProvider):
 class AstProvider(BaseProvider):
 
     __provider__ = "ast_Call"
+    __provider__ = "interpolated_string"
+    __lang__ = "en_GB"
 
     def interpolated_string(self):
-        text = self.generator.text(max_nb_chars=20)
+        text = self.generator.text(max_nb_chars=40)
         split_text = text.split(" ")
         index = randint(0, len(split_text) - 1)
-        arg = split_text[index]
+        arg = split_text[index].rstrip(".")
         split_text[index] = "{}"
 
         return (" ".join(split_text), arg)
 
     def ast_Call(self, func_name_id, func_name_attr):
-        interpolated_string = self.interpolated_string()
+        message, values = self.interpolated_string()
 
         return ast.Call(
             func=ast.Attribute(
@@ -168,8 +173,8 @@ class AstProvider(BaseProvider):
                 ctx=ast.Load()
             ),
             args=[
-                ast.Constant(value=interpolated_string[0]),
-                ast.Name(id=interpolated_string[1], ctx=ast.Load())
+                ast.Constant(value=message),
+                ast.Name(id=values, ctx=ast.Load())
             ],
             keywords=[],
             lineno=self.generator.random_int(min=0, max=999)

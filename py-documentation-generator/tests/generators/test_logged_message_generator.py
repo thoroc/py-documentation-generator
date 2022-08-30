@@ -1,20 +1,12 @@
 import pytest
 import ast
+from pathlib import Path
 from loguru import logger
 
-from src.generators.logged_message_generator import FuncVisitor
+from src.generators.logged_message_generator import FuncVisitor, LoggedMessageDocumentationGenerator
 
 
 class TestFuncVisitor:
-
-    @pytest.mark.skip()
-    def test__init__(self):
-        # Arrange
-
-        # Act
-
-        # Assert
-        assert True
 
     @pytest.mark.parametrize("log_level, expected", [
         ("DEBUG", "debug"),
@@ -113,3 +105,56 @@ class TestFuncVisitor:
 
         # Assert
         assert arguments == ["args1", "args2", "args3"]
+
+
+class TestLoggedMessageDocumentionGenerator:
+
+    def test__parse_logs(self, mocker, tmp_path_factory):
+        # Arrange
+        cwd = mocker.patch.object(Path, "cwd")
+        cwd.return_value = tmp_path_factory.mktemp("data")
+        gen = LoggedMessageDocumentationGenerator(
+            source_dir="py-documentation-generator/src",
+            base_url="https://github.com/thoroc/py-documentation-generator"
+        )
+        # Act
+        sut = gen._parse_logs(source_code="", instance_name="logger")
+
+        # Assert
+        assert isinstance(sut, dict)
+        assert sut == {}
+
+    @pytest.mark.parametrize("log_level, log_func", [
+        ("DEBUG", "debug"),
+        ("INFO", "info"),
+        (None, "critical"),
+        ("WARNING", "warning"),
+        ("ERROR", "error"),
+        ("CRITICAL", "critical"),
+        ("EXCEPTION", "exception"),
+    ])
+    def test__parse_logs_with_source(self, faker, mocker, tmp_path_factory, log_level, log_func):
+        # Arrange
+        cwd = mocker.patch.object(Path, "cwd")
+        cwd.return_value = tmp_path_factory.mktemp("data")
+        gen = LoggedMessageDocumentationGenerator(
+            source_dir="py-documentation-generator/src",
+            base_url="https://github.com/thoroc/py-documentation-generator"
+        )
+        message, values = faker.interpolated_string()
+
+        # Act
+        source_code = f"""# test code
+from loguru import logger
+
+logger.{log_func}("{message}", {values})
+        """
+        sut = gen._parse_logs(
+            source_code=source_code,
+            instance_name="logger",
+            log_level=log_level
+        )
+
+        # Assert
+        assert isinstance(sut, dict)
+        assert sut == {4: (message, [values])}
