@@ -41,7 +41,7 @@ pytest-clarity = "^1.0.1"
 pytest-cov = "^3.0.0"
 pytest-logger = "^0.5.1"
 pytest-mock = "^3.6.1"
-Faker = "^14.1.1"
+Faker = "^14.2.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
