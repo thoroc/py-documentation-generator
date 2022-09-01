@@ -113,7 +113,7 @@ toml = ">=0.10.2"
 
 [[package]]
 name = "faker"
-version = "14.1.1"
+version = "14.2.0"
 description = "Faker is a Python package that generates fake data for you."
 category = "dev"
 optional = false
@@ -727,7 +727,7 @@ dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "1b143f051b0f98f51bd4c613043e80cb6eb79e2a5bd401d99ff355d2009e98e7"
+content-hash = "0f44320d87466bb54ca1e27e8c0dd03ad1e5107c64c9d0825ae9d40451ed98fb"
 
 [metadata.files]
 astor = [
@@ -821,8 +821,8 @@ coverage-threshold = [
     {file = "coverage_threshold-0.4.4.tar.gz", hash = "sha256:bfd521df1c730e8e34ed66fe95dfa8f079760e763c611cabe84b0779e007898a"},
 ]
 faker = [
-    {file = "Faker-14.1.1-py3-none-any.whl", hash = "sha256:15bc9d01b3caf427a459d191d972bbca868f2200fbfc157da6ed09c2a58fbb87"},
-    {file = "Faker-14.1.1.tar.gz", hash = "sha256:2d506c09aeafa87296f834fd15c6efa87182320f8bf4f709bd3d882397c18076"},
+    {file = "Faker-14.2.0-py3-none-any.whl", hash = "sha256:e02c55a5b0586caaf913cc6c254b3de178e08b031c5922e590fd033ebbdbfd02"},
+    {file = "Faker-14.2.0.tar.gz", hash = "sha256:6db56e2c43a2b74250d1c332ef25fef7dc07dcb6c5fab5329dd7b4467b8ed7b9"},
 ]
 flake8 = [
     {file = "flake8-5.0.4-py2.py3-none-any.whl", hash = "sha256:7a1cf6b73744f5806ab95e526f6f0d8c01c66d7bbe349562d22dfca20610b248"},
