@@ -1,4 +1,6 @@
+import os
 import ast
+import keyword
 from pathlib import Path
 from random import randint
 from git import Repo, Commit
@@ -155,10 +157,15 @@ class AstProvider(BaseProvider):
     __lang__ = "en_GB"
 
     def interpolated_string(self):
-        text = self.generator.text(max_nb_chars=40)
+        text = self.generator.sentence(nb_words=10, variable_nb_words=True)
         split_text = text.split(" ")
         index = randint(0, len(split_text) - 1)
         arg = split_text[index].rstrip(".")
+
+        # just in case there is an issue with the arg
+        if keyword.iskeyword(arg) or keyword.issoftkeyword(arg):
+            arg = "foo"
+
         split_text[index] = "{}"
 
         return (" ".join(split_text), arg)

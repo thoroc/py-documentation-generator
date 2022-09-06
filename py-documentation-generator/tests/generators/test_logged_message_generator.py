@@ -158,3 +158,37 @@ logger.{log_func}("{message}", {values})
         # Assert
         assert isinstance(sut, dict)
         assert sut == {4: (message, [values])}
+
+    def test__get_relative_path_is_root(self, tmp_path_factory, faker):
+        # Arrange
+        root_dir = tmp_path_factory.mktemp("data")
+        src_dir = Path(root_dir, "src")
+        random_dir = Path(src_dir, faker.word())
+
+        gen = LoggedMessageDocumentationGenerator(
+            source_dir=src_dir,
+            base_url="https://github.com/thoroc/py-documentation-generator"
+        )
+
+        # Act
+        path = gen._get_relative_path(random_dir)
+
+        # Assert
+        assert path == "root"
+
+    def test__get_relative_path_other(self, tmp_path_factory, faker):
+        # Arrange
+        root_dir = tmp_path_factory.mktemp("data")
+        src_dir = Path(root_dir, "src")
+        random_dir = Path(src_dir, faker.word(), faker.word())
+
+        gen = LoggedMessageDocumentationGenerator(
+            source_dir=src_dir,
+            base_url="https://github.com/thoroc/py-documentation-generator"
+        )
+
+        # Act
+        path = gen._get_relative_path(random_dir)
+
+        # Assert
+        assert path != "root"
