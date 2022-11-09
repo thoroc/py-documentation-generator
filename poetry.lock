@@ -545,7 +545,7 @@ testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.
 
 [[package]]
 name = "pytest-bdd"
-version = "6.1.0"
+version = "6.1.1"
 description = "BDD for pytest"
 category = "dev"
 optional = false
@@ -732,7 +732,7 @@ dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "f83f48691c5103310dccbbad203c69a9c99b099390ded21280c6d64955e88c75"
+content-hash = "dfa330914a5ae503433b5fbd5191210d2faaf0fb9721a04a8a9f694969c1d918"
 
 [metadata.files]
 astor = [
@@ -1058,8 +1058,8 @@ pytest = [
     {file = "pytest-7.2.0.tar.gz", hash = "sha256:c4014eb40e10f11f355ad4e3c2fb2c6c6d1919c73f3b5a433de4708202cade59"},
 ]
 pytest-bdd = [
-    {file = "pytest_bdd-6.1.0-py3-none-any.whl", hash = "sha256:552b709ca630c7a718758f2ef39b12d6cecafa81771301731a8b2814bff8ca9d"},
-    {file = "pytest_bdd-6.1.0.tar.gz", hash = "sha256:36fb2d025f7b9ca163d5f27499952c837ac95216db0a2a98c6728be82388c5a1"},
+    {file = "pytest_bdd-6.1.1-py3-none-any.whl", hash = "sha256:57eba5878d77036f356a85fb1d108cb061d8af4fb4d032b1a424fa9abe9e498b"},
+    {file = "pytest_bdd-6.1.1.tar.gz", hash = "sha256:138af3592bcce5d4684b0d690777cf199b39ce45d423ca28086047ffe6111010"},
 ]
 pytest-clarity = [
     {file = "pytest-clarity-1.0.1.tar.gz", hash = "sha256:505fe345fad4fe11c6a4187fe683f2c7c52c077caa1e135f3e483fe112db7772"},
