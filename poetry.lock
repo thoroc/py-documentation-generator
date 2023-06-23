@@ -241,13 +241,13 @@ pyflakes = ">=3.0.0,<3.1.0"
 
 [[package]]
 name = "flake8-annotations-complexity"
-version = "0.0.7"
+version = "0.0.8"
 description = "A flake8 extension that checks for type annotations complexity"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "flake8_annotations_complexity-0.0.7-py3-none-any.whl", hash = "sha256:a1410f5b964927032471ce99932d1670d28ea323b50400b45cc14575be070508"},
-    {file = "flake8_annotations_complexity-0.0.7.tar.gz", hash = "sha256:2ecd93375e3dee0d4e11e476087a52fa985c47bc049015ff04a9de38fc0c4dfd"},
+    {file = "flake8_annotations_complexity-0.0.8-py3-none-any.whl", hash = "sha256:44e299dac0ab64f3af4b478fac7feb635c113a606036de8b39dadab3531da7ed"},
+    {file = "flake8_annotations_complexity-0.0.8.tar.gz", hash = "sha256:8914e76e31672c4063c928b0a250db6b935a16d1799de10457958a71d11bb665"},
 ]
 
 [package.dependencies]
@@ -1104,4 +1104,4 @@ dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "0da221a25af17c68990c9483584f235c2fcac8ad7d9348340de876059c4d08c6"
+content-hash = "be597a83ceff415b393bea4507f9a95f21a52833a9517e0454f21668a98ae471"
