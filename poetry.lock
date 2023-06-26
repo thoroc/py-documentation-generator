@@ -425,13 +425,13 @@ flake8 = ">3.0.0"
 
 [[package]]
 name = "flake8-variables-names"
-version = "0.0.5"
+version = "0.0.6"
 description = "A flake8 extension that helps to make more readable variables names"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "flake8_variables_names-0.0.5-py3-none-any.whl", hash = "sha256:e3277031696bbe10b5132b49938cde1d70fcae9561533b7bd7ab8e69cb27addb"},
-    {file = "flake8_variables_names-0.0.5.tar.gz", hash = "sha256:30133e14ee2300e13a60393a00f74d98110c76070ac67d1ab91606f02824a7e1"},
+    {file = "flake8_variables_names-0.0.6-py3-none-any.whl", hash = "sha256:4aff935d54b3f7afcd026b4dae55029877bd05a7c507b294b45bc7bf577d7b47"},
+    {file = "flake8_variables_names-0.0.6.tar.gz", hash = "sha256:292c50e4813d632aa3adcd02c185e7bb583f5fc8ebe02e70f13c958bfe46ad91"},
 ]
 
 [[package]]
@@ -1104,4 +1104,4 @@ dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "a2a7d95f1f96bef5cbd2e88c8fbdf6a77ee2d5ba06ff07a0cbfa1deaca577af3"
+content-hash = "ad7fa6a0f0fb97fba077d9f0b18cc0227e1c6b6a71bbb727f1f8e10f5bf6dce7"
