@@ -777,6 +777,17 @@ files = [
 ]
 
 [[package]]
+name = "py"
+version = "1.11.0"
+description = "library with cross-python path, ini-parsing, io, code, log facilities"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+files = [
+    {file = "py-1.11.0-py2.py3-none-any.whl", hash = "sha256:607c53218732647dff4acdfcd50cb62615cedf612e72d1724fb1a0cc6405b378"},
+    {file = "py-1.11.0.tar.gz", hash = "sha256:51c75c4126074b472f746a24399ad32f6053d1b34b68d2fa41e558e6f4a98719"},
+]
+
+[[package]]
 name = "pycodestyle"
 version = "2.11.0"
 description = "Python style guide checker"
@@ -918,17 +929,17 @@ testing = ["fields", "hunter", "process-tests", "pytest-xdist", "six", "virtuale
 
 [[package]]
 name = "pytest-logger"
-version = "0.5.1"
+version = "1.0.0"
 description = "Plugin configuring handlers for loggers from Python logging module."
 optional = false
 python-versions = "*"
 files = [
-    {file = "pytest-logger-0.5.1.tar.gz", hash = "sha256:45324dc1c946d6600dbaa259c2dc97b59d4ebd1d61394ef6c44ebdded1cb165b"},
-    {file = "pytest_logger-0.5.1-py2.py3-none-any.whl", hash = "sha256:0d174a40e1731817fb5c51b9844b7b4da366b33ee4c39d6e30e4165b74b99ac7"},
+    {file = "pytest_logger-1.0.0-py2.py3-none-any.whl", hash = "sha256:3cb5743a156e3d099cae7362257a34de555389f79af2ff774df212b69601701e"},
 ]
 
 [package.dependencies]
 future = "*"
+py = "*"
 pytest = ">=3.2"
 
 [[package]]
@@ -1115,4 +1126,4 @@ dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "b2caf447a4341aa7de8ceedf879825f48c4be39dc95b7f410289aea5038ee1fd"
+content-hash = "7b92967fc79f3b43a015d3284facfaaf977741aaa7c2cfe9d4dbd8028e095ffd"
