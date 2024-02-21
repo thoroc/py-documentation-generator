@@ -39,7 +39,7 @@ pytest = "^8.0.0"
 pytest-bdd = "^7.0.1"
 pytest-clarity = "^1.0.1"
 pytest-cov = "^4.1.0"
-pytest-logger = "^1.0.0"
+pytest-logger = "^1.1.0"
 pytest-mock = "^3.12.0"
 Faker = "^23.2.1"
 
