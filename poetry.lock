@@ -910,13 +910,13 @@ testing = ["fields", "hunter", "process-tests", "pytest-xdist", "six", "virtuale
 
 [[package]]
 name = "pytest-logger"
-version = "1.1.0"
+version = "1.1.1"
 description = "Plugin configuring handlers for loggers from Python logging module."
 optional = false
 python-versions = "*"
 files = [
-    {file = "pytest-logger-1.1.0.tar.gz", hash = "sha256:b6245e352fbf3c492c22553fb7a50b6e17d534be07ca9bec6b4a25cdda0f4a9a"},
-    {file = "pytest_logger-1.1.0-py2.py3-none-any.whl", hash = "sha256:41cc1ca233ec2629c0bda23ff01d4356ed4af8148d55b41ffcd131ed6f5c29ac"},
+    {file = "pytest-logger-1.1.1.tar.gz", hash = "sha256:82cb36b505a72e15a2f0e12c6451d8c21ecbe0379d322b2bed4f05cb7842c9d9"},
+    {file = "pytest_logger-1.1.1-py2.py3-none-any.whl", hash = "sha256:d9f7b88c04828de649a033779d30f359fce026fde37c1e91d83336a66d27a9fb"},
 ]
 
 [package.dependencies]
@@ -1106,4 +1106,4 @@ dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "05fd3450a56b77b1ff9982239df46bcce3889a7479b52122dcdaef2dca1cf477"
+content-hash = "c129f6c7a721a4a7601f9fe10a7d81873faf20fd537ac0bf93fac7e6ec2e52eb"
