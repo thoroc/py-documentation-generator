@@ -40,7 +40,7 @@ pytest-bdd = "^7.1.2"
 pytest-clarity = "^1.0.1"
 pytest-cov = "^4.1.0"
 pytest-logger = "^1.1.1"
-pytest-mock = "^3.12.0"
+pytest-mock = "^3.14.0"
 Faker = "^24.3.0"
 
 [build-system]
