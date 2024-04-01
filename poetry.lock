@@ -275,13 +275,13 @@ dev = ["coverage", "hypothesis", "hypothesmith (>=0.2)", "pre-commit", "pytest",
 
 [[package]]
 name = "flake8-builtins"
-version = "2.2.0"
+version = "2.3.0"
 description = "Check for python builtins being used as variables or parameters"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "flake8_builtins-2.2.0-py3-none-any.whl", hash = "sha256:7ee5766d9c60e5d579dfda84e65c6d0e6c26005f6f59cb9bf722462d7987a807"},
-    {file = "flake8_builtins-2.2.0.tar.gz", hash = "sha256:392d5af3a0720c5a863aa93dc47f48c879081345a143fe9f20d995fe9ff5686a"},
+    {file = "flake8_builtins-2.3.0-py3-none-any.whl", hash = "sha256:2db907d96d2817beb3c861d46fad8dde647e76894c6af88a6cc91dd7c3c58bc6"},
+    {file = "flake8_builtins-2.3.0.tar.gz", hash = "sha256:c3669520104233356c1909389d1b5016107c93f4c494922e829fd3c65c10c81c"},
 ]
 
 [package.dependencies]
@@ -1106,4 +1106,4 @@ dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "b1704511a38719239da479ea85f332afcff4a4ba5cb6bceb0b5849cfe64197cc"
+content-hash = "e9c91a0dd4bfea567cd8a9fcc07c28bdd46c06fe5cfab8e0395de220a55b765e"
