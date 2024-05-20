@@ -730,13 +730,13 @@ docs = ["sphinx (>=1.2)"]
 
 [[package]]
 name = "pep8-naming"
-version = "0.14.0"
+version = "0.14.1"
 description = "Check PEP-8 naming conventions, plugin for flake8"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "pep8-naming-0.14.0.tar.gz", hash = "sha256:c2dcf35de7731b4fe1adcea4ca97e0abf52c811b137054edd25816a34016c9cd"},
-    {file = "pep8_naming-0.14.0-py3-none-any.whl", hash = "sha256:5a74972c7a0f882aa643120c8de16b5d8b8b1636a17ac04dbeaff5ce393aa8b4"},
+    {file = "pep8-naming-0.14.1.tar.gz", hash = "sha256:1ef228ae80875557eb6c1549deafed4dabbf3261cfcafa12f773fe0db9be8a36"},
+    {file = "pep8_naming-0.14.1-py3-none-any.whl", hash = "sha256:63f514fc777d715f935faf185dedd679ab99526a7f2f503abb61587877f7b1c5"},
 ]
 
 [package.dependencies]
@@ -1107,4 +1107,4 @@ dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "07c1d6013fb7e402fa834d2ae09f22e68d86b456c05a5b949e3e119cd9327647"
+content-hash = "23ae101adc2ed86e56b2a43e27d5e6e7e8c3c55260e3c19f9e0334b379c5aea1"
