@@ -195,13 +195,13 @@ toml = ["tomli"]
 
 [[package]]
 name = "coverage-threshold"
-version = "0.4.4"
+version = "0.5.0"
 description = "Tools for coverage threshold limits"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "coverage_threshold-0.4.4-py3-none-any.whl", hash = "sha256:0668e63470ff918fe989af6a4917bfe133e663d25970a306dd0693a3f377f2fb"},
-    {file = "coverage_threshold-0.4.4.tar.gz", hash = "sha256:bfd521df1c730e8e34ed66fe95dfa8f079760e763c611cabe84b0779e007898a"},
+    {file = "coverage_threshold-0.5.0-py3-none-any.whl", hash = "sha256:81ee3c1b8c1d96ffd01617faf7c2efbd19ea7104a89057222f04e5d4102794b0"},
+    {file = "coverage_threshold-0.5.0.tar.gz", hash = "sha256:ebdf2441ca1e66d7ac6e4bcd8e3da9d09b8e6e0a18d7522ab1d6ba60dc0ed920"},
 ]
 
 [package.dependencies]
@@ -1126,4 +1126,4 @@ dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "be2442344b804047b4b053631c277e87c5f4ee9ab28ab8f628a4c374de48e20f"
+content-hash = "e4429f546eae7894f617648fc565fb666a7395af57299b6c6ff16a0a0e61d337"
